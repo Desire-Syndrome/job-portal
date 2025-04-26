@@ -1,0 +1,59 @@
+//TODO: Guide how to install react with Tailwind and Vite (flowbite.com/docs/getting-started/react)
+1) install project with Vite (autoreload setup)
+npm create vite@latest client -- --template react 
+2) move to project folder
+cd client
+3) install node package manager
+npm install 
+4) install router to move through pages
+npm install react-router-dom 
+5) install reduce to work with states (its like a storage to all states)
+npm install redux react-redux redux-persist redux-thunk
+6) install axios to communicate with the backend (send http requests)
+npm install axios
+=======================
+7) install tailwind (like bootstrap)
+npm install -D tailwindcss@^3.4.17 postcss autoprefixer
+npx tailwindcss init -p
+npm install flowbite-react
+8) install toastify to show success, errors, etc..
+npm install react-toastify
+9) install quill  to create reach text editors
+npm install quill
+10) install k-convert - help convert kilobytes to megabytes, kilometers to miles, etc..
+npm i k-convert
+11) install moment - for parsing, validating and formatting dates
+npm i moment
+
+
+//TODO: Change in files
+//? ./src/index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+//? tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+import flowbite from "flowbite/plugin";
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/flowbite/**/*.js", 
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [
+    flowbite, 
+  ],
+}
+
+
+//? Terminal Commands
+cd client -> go to folder in terminal
+npm run dev -> start server
+npx kill-port 5173 -> stop server
+clear -> clear console logs
+
+cd client; npm run dev
+npx kill-port 3000; npx kill-port 5173

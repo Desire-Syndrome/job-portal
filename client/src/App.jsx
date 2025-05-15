@@ -5,6 +5,7 @@ import UseScrollToTop from "./hooks/useScrollToTop"
 import Home from './pages/Home'
 import Job from './pages/Job'
 import UserApplications from './pages/UserApplications'
+import UserInfo from './pages/UserInfo'
 import Dashboard from './pages/Dashboard'
 import AddJob from './pages/AddJob'
 import ManageJobs from './pages/ManageJobs'
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />}></Route>
         <Route exact path='/job/:id' element={<Job />} />
+        <Route exact path='/user-profile' element={<UserInfo />} />
         <Route exact path='/my-applications' element={<UserApplications />} />
 
         <Route exact path='/dashboard' element={<Dashboard />}>

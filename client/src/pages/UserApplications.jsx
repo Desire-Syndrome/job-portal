@@ -2,11 +2,11 @@ import Layouts from '../layouts/Layouts';
 
 
 const UserApplications = () => {
-	return (<Layouts> 
-
+	return (
+		
 		<div>UserApplications</div>
 		
-		</Layouts>)
+		)
 }
 
 export default UserApplications

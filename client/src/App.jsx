@@ -23,7 +23,7 @@ function App() {
         <Route exact path="/" element={<Home />}></Route>
         <Route exact path='/job/:id' element={<Job />} />
         <Route exact path='/user' element={<UserDashboard />}>
-          <Route exact path='user-applications' element={<UserApplications />} />
+          <Route exact path='my-applications' element={<UserApplications />} />
           <Route exact path='edit-user-profile' element={<UserInfo />} />
         </Route>
         <Route exact path='/dashboard' element={<CompanyDashboard />}>

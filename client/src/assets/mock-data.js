@@ -231,3 +231,8 @@ export const company = {
 	location: "Bangalore", 
 	image: profile_img 
 };
+
+export const user = { 
+	name: "Kostiantyn", 
+	image: profile_img 
+};

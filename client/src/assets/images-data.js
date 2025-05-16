@@ -33,6 +33,9 @@ import lock_icon from './images/lock_icon.svg'
 import samsung_logo from './images/samsung_logo.png'
 import adobe_logo from './images/adobe_logo.png'
 import amazon_logo from './images/amazon_logo.png'
+import icon1 from './images/icon1.png'
+import icon2 from './images/icon2.png'
+import icon3 from './images/icon3.png'
 
 
 export const assetsImages = {
@@ -70,5 +73,8 @@ export const assetsImages = {
     lock_icon,
     samsung_logo,
     adobe_logo,
-    amazon_logo
+    amazon_logo,
+    icon1,
+    icon2,
+    icon3
 }

@@ -224,3 +224,10 @@ export const userApplications = [
         logo: company_icon,
     }
 ];
+
+export const company = { 
+	name: "Slack", 
+	jobTitle: "Full Stack Developer", 
+	location: "Bangalore", 
+	image: profile_img 
+};

@@ -12,16 +12,16 @@ function UserMenu() {
 								<img src={user.image} className='w-8 border rounded-full' alt="Company Logo" />
 								<div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-12'>
 									<ul className='list-none m-0 p-2 bg-white rounded-md border text-sm w-max'>
-										<li><Link to={'/'} className='py-1 px-2 cursor-pointer flex items-center gap-2 hover:bg-blue-100'>
+										<li><Link to={'/'} className='py-1 px-2 cursor-pointer flex items-center gap-2 hover:bg-blue-100 transition duration-300 ease-in-out'>
 											<img src={assetsImages.icon1} className='w-4 h-4' alt="icon" />Back to Website
 										</Link></li>
-										<li><Link to={'/user/my-applications'} className='py-1 px-2 cursor-pointer flex items-center gap-2 hover:bg-blue-100'>
+										<li><Link to={'/user/my-applications'} className='py-1 px-2 cursor-pointer flex items-center gap-2 hover:bg-blue-100 transition duration-300 ease-in-out'>
 											<img src={assetsImages.home_icon} className='w-4 h-4' alt="icon" />My Applications
 										</Link></li>
-										<li><Link to={'/user/edit-user-profile'} className='py-1 px-2 cursor-pointer flex items-center gap-2 hover:bg-blue-100'>
+										<li><Link to={'/user/edit-user-profile'} className='py-1 px-2 cursor-pointer flex items-center gap-2 hover:bg-blue-100 transition duration-300 ease-in-out'>
 											<img src={assetsImages.icon2} className='w-4 h-4' alt="icon" />Edit Profile
 										</Link></li>
-										<li className='py-1 px-2 cursor-pointer flex items-center gap-2 hover:bg-blue-100'>
+										<li className='py-1 px-2 cursor-pointer flex items-center gap-2 hover:bg-blue-100 transition duration-300 ease-in-out'>
 											<img src={assetsImages.icon3} className='w-4 h-4' alt="icon" />Logout
 										</li>
 									</ul>

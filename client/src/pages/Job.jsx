@@ -4,8 +4,8 @@ import { jobs } from '../assets/mock-data'
 import { useState, useEffect } from "react"
 import { useParams } from 'react-router-dom'
 
-import kconvert from 'k-convert'; // convert numbers
-import moment from 'moment'; // format dates
+import kconvert from 'k-convert';
+import moment from 'moment';
 
 import JobCard from '../components/JobCard.jsx'
 import Layouts from '../layouts/Layouts'
@@ -15,6 +15,7 @@ const Job = () => {
 
 	const { id } = useParams();
 	const [job, setJob] = useState(null);
+
 
 	useEffect(() => {
 		const foundJob = jobs.find(job => job._id === id);
@@ -82,7 +83,7 @@ const Job = () => {
 				<p className='text-lg sm:text-xl font-medium  text-center text-neutral-700'>Job not found or deleted...</p>
 			</div>
 		)}
-
+		
 	</Layouts>)
 }
 

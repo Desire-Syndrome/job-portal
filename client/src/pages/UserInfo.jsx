@@ -1,6 +1,3 @@
-import Layouts from '../layouts/Layouts';
-
-
 const UserInfo = () => {
 	return (
 

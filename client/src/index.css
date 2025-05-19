@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+.my-quil.ql-container {height: 300px;}
+
 /*************************************************/
 @layer base { html{scroll-behavior: auto;} }
 ::-webkit-scrollbar {display: none;}

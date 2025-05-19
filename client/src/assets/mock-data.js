@@ -2,20 +2,11 @@ import company_icon from "./images/company_icon.svg";
 import profile_img from "./images/profile_img.png";
 
 
-export const jobCategories = [
-  "Programming",
-  "Designing",
-  "Management",
-  "Marketing",
-  "Cybersecurity"
-]
+export const jobCategories = ["Programming","Designing","Management","Marketing","Cybersecurity"]
 
-export const jobLocations = [
-	"Dublin",
-	"Cork",
-	"California",
-	"New York"
-]
+export const jobLocations = ["Dublin","Cork","California","New York"]
+
+export const jobLevels = ["Junior","Middle","Senior"]
 
 export const jobs = [
 	{

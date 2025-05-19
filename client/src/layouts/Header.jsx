@@ -13,11 +13,10 @@ const Header = () => {
 	const [company, setCompany] = useState(null);
 	const [user, setUser] = useState(null);
 
-	// popups
 	const [popupState, setPopupState] = useState("Login");
 	const [popupVariation, setPopupVariation] = useState(null);
 	const [showPopup, setShowPopup] = useState(false);
-	// forms
+
 	const [name, setName] = useState("");
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
@@ -28,7 +27,6 @@ const Header = () => {
 		setImage(null); setName(""); setEmail(""); setPassword("");
 		setPopupState("Login"); setShowPopup(false); setPopupVariation(null);
 	}
-
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -52,7 +50,6 @@ const Header = () => {
 	return (<>
 
 		<div className='shadow py-4'><div className='max-w-[1900px] px-4 2xl:px-20 mx-auto flex flex-wrap justify-between items-center lg:order-1'>
-			{/* Logo */}
 			<Link to="/" className='w-[160px] md:w-[210px]'><img src={assetsImages.logo} className='w-full' alt="Logo" /></Link>
 			{/* User Menu and Login Buttons */}
 			<div className='flex gap-2 md:text-sm text-xs lg:order-3'>
@@ -120,7 +117,7 @@ const Header = () => {
 					</form>
 				</div></div>
 		)}
-
+		
 	</>)
 }
 

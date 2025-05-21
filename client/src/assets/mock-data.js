@@ -218,8 +218,8 @@ export const userApplications = [
 
 export const company = { 
 	name: "Slack", 
-	jobTitle: "Full Stack Developer", 
-	location: "Bangalore", 
+	email: "slack@gmail.com", 
+	password: "1234", 
 	image: profile_img 
 };
 

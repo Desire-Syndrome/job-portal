@@ -63,11 +63,11 @@ const AddJob = () => {
 						))}
 					</select>
 				</div>
-				<div>
-					<p className='mb-2'>Job Salary</p>
-					<input onChange={e => setSalary(e.target.value)} value={salary} min={0}
-						type="number" placeholder="" className='px-3 py-2 border-2 border-gray-300 w-[125px]' required />
-				</div>
+			</div>
+			<div>
+				<p className='mb-2'>Job Salary</p>
+				<input onChange={e => setSalary(e.target.value)} value={salary} min={0}
+					type="number" placeholder="" className='px-3 py-2 border-2 border-gray-300 w-[125px]' required />
 			</div>
 			<button className="mt-5 bg-blue-600 rounded px-12 py-3 text-white hover:bg-blue-500 transition duration-300 ease-in-out">Post job</button>
 		</form>

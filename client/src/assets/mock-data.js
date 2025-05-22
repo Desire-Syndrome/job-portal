@@ -225,5 +225,8 @@ export const company = {
 
 export const user = { 
 	name: "Kostiantyn", 
+	email: "slack@gmail.com", 
+	password: "1234", 
+	resume: null,
 	image: profile_img 
 };

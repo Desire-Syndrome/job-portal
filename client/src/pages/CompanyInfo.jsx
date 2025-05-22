@@ -15,11 +15,11 @@ const CompanyInfo = () => {
 	return (
 
 		<form className='container py-8 flex flex-col w-full items-start gap-3'>
-			<div className='w-full max-w-xl py-4 text-center bg-slate-200 rounded-lg'>
+			<div className='w-full max-w-xl py-4  bg-slate-200 rounded-lg'>
 				<label htmlFor="image">
-					<img src={image ? typeof image === 'string' ? image : URL.createObjectURL(image) : assetsImages.upload_area} alt="Upload image" className='w-24 h-24 rounded-full inline-block cursor-pointer' />
+					<img src={image ? typeof image === 'string' ? image : URL.createObjectURL(image) : assetsImages.upload_area} alt="Upload image" className='w-24 h-24 ms-5 rounded-full inline-block cursor-pointer' />
 					<input onChange={e => setImage(e.target.files[0])} type="file" id='image' hidden />
-					<p className='ms-5 px-2 py-5 cursor-pointer inline-block'>Upload company logo</p>
+					<p className='ms-5 px-2 py-5 cursor-pointer inline-block'>Change company logo</p>
 				</label>
 			</div>
 			<div className='w-full max-w-xl'>

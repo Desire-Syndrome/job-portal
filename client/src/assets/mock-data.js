@@ -191,6 +191,7 @@ export const manageApplications = [
 
 export const userApplications = [
     {
+				_id: 1,
         company: 'Amazon',
         title: 'Full Stack Developer',
         location: 'Bangalore',
@@ -199,6 +200,7 @@ export const userApplications = [
         logo: company_icon,
     },
     {
+				_id: 2,
         company: 'Google',
         title: 'Marketing Manager',
         location: 'London',
@@ -207,11 +209,12 @@ export const userApplications = [
         logo: company_icon,
     },
     {
+				_id: 3,
         company: 'Qualcomm',
         title: 'UI/UX Designer',
         location: 'Dubai',
         date: '15 Oct, 2024',
-        status: 'Pending',
+        status: 'Rejected',
         logo: company_icon,
     }
 ];

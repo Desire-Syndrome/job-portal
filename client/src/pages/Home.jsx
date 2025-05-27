@@ -94,7 +94,7 @@ const Home = () => {
 						{jobCategories.map((category, i) => (
 							<li key={i} className='flex gap-3 items-center'>
 								<input onChange={() => handleCategoryChange(category)} checked={selectedCategories.includes(category)}
-									type="checkbox" className='cursor-pointer' />{category}
+									type="checkbox" className='cursor-pointer border-gray-400' />{category}
 							</li>
 						))}
 					</ul>
@@ -106,7 +106,7 @@ const Home = () => {
 						{jobLocations.map((location, i) => (
 							<li key={i} className='flex gap-3 items-center'>
 								<input onChange={() => handleLocationChange(location)} checked={selectedLocations.includes(location)}
-									type="checkbox" className='cursor-pointer' />{location}
+									type="checkbox" className='cursor-pointer border-gray-400' />{location}
 							</li>
 						))}
 					</ul>

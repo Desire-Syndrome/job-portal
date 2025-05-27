@@ -44,7 +44,7 @@ const ManageJobs = () => {
 								<td className='py-2 px-2 text-center w-[100px]'>{job.applicants}</td>
 								<td className='py-2 px-2 text-center w-[100px]'>
 									<input
-										type="checkbox" className='mb-1 scale-125 max-lg:scale-100 border-gray-500' />
+										type="checkbox" className='mb-1 scale-125 max-lg:scale-100 border-gray-400' />
 								</td>
 							</tr>
 						))}

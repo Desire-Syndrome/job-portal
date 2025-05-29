@@ -2,11 +2,11 @@ const router = require('express').Router();
 const AsyncHandler = require('express-async-handler');  
 
 // Connect Object Models
-const User = require('../models/User');
-const Company = require('../models/Company');
+const User = require('./models/User');
+const Company = require('./models/Company');
 // import our JSON from data folder
-const users = require('../data/json/Users');
-const companies = require('../data/json/Companies');
+const users = require('./data/json/Users');
+const companies = require('./data/json/Companies');
 
 
 // Routs to populate our Database

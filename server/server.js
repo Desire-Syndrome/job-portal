@@ -1,34 +1,29 @@
-import 'dotenv/config'; 
+const dotenv = require("dotenv");
+dotenv.config();
 
-// middleware
-import express from 'express';
-import cors from 'cors';
+// connect Middleware
+const express = require("express");
+const cors = require("cors");
 
-// configs
-import connectDB from './configs/db.js'; // database
+// connect configs
+const connectDB = require('./configs/db.js');
+const databaseSeeder = require('./configs/databaseSeeder.js');
+  
 
-// routers
-// import companyRoutes from "./routes/companyRoutes.js";
-// import jobRoutes from "./routes/jobRoutes.js";
-// import userRoutes from "./routes/userRoutes.js";
-
-
+// setup Middleware
 const app = express();
-// Connect Middlewares
 app.use(cors());
 app.use(express.json());
 
 
 // Routes
-// test and middleware routes
+// test and seed routes
 app.get('/', (req, res) => { res.json({ message: 'API works!' }); });
+app.use('/api/seed', databaseSeeder);
 // api routes
-// app.use('/api/company', companyRoutes);
-// app.use('/api/jobs', jobRoutes);
-// app.use('/api/users', userRoutes);
 
 
 // Setup and Run Server
-const PORT = process.env.PORT || 3000; // assign port from .env
-connectDB(); // connect to DB
+const PORT = process.env.PORT || 3000; 
+connectDB(); 
 app.listen(PORT, () => console.log(`server listening on port ${PORT}`))

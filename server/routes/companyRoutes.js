@@ -4,22 +4,26 @@ const {
   companyRegistration, companyLogin, getCompanyData, updateCompany, deleteCompany, postJob, getPostedJobs, getApplicants, changeApplicationStatus, changeJobVisibility
 } = require('../controllers/companyController.js');
 
+const protect = require('../middleware/Auth.js'); 
+
+const upload = require('../middleware/upload.js'); 
+
 
 // Routes
-router.post('/registration', companyRegistration);
+router.post('/registration', upload.fields([{ name: 'logo', maxCount: 1}]), companyRegistration);
 router.post('/login', companyLogin);
 
-router.get('/profile', getCompanyData);
-router.put('/profile', updateCompany);
-router.delete('/profile', deleteCompany);
+router.get('/profile', protect, getCompanyData);
+router.put('/profile', protect, upload.fields([{ name: 'logo', maxCount: 1}]), updateCompany);
+router.delete('/profile', protect, deleteCompany);
 
-router.post('/job', postJob);
-router.put('/change-visibility', changeJobVisibility);
+router.post('/job', protect, postJob);
+router.put('/change-visibility', protect, changeJobVisibility);
 
-router.get('/get-jobs', getPostedJobs);
+router.get('/get-jobs', protect, getPostedJobs);
 
-router.get('/applicants', getApplicants);
-router.put('/change-status', changeApplicationStatus);
+router.get('/applicants', protect, getApplicants);
+router.put('/change-status', protect, changeApplicationStatus);
 
 
 module.exports = router;

@@ -16,17 +16,17 @@ app.use(express.json());
 
 
 // Routes
-// test and seed routes
+// test and seeder
 app.get('/', (req, res) => { res.json({ message: 'API works!' }); });
 const databaseSeeder = require('./databaseSeeder.js');
 app.use('/api/seed', databaseSeeder);
 // api routes
 const companyRoutes = require( "./routes/companyRoutes.js");
 app.use('/api/company', companyRoutes);
+const userRoutes = require("./routes/userRoutes.js");
+app.use('/api/user', userRoutes);
 const jobRoutes = require("./routes/jobRoutes.js");
 app.use('/api/jobs', jobRoutes);
-const userRoutes = require("./routes/userRoutes.js");
-app.use('/api/users', userRoutes);
 
 
 // Setup and Run Server

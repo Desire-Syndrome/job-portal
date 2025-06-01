@@ -6,7 +6,7 @@ const {
 
 const protect = require('../middleware/Auth.js'); 
 
-const upload = require('../middleware/upload.js'); 
+const { upload } = require('../middleware/multer.js');
 
 
 // Routes

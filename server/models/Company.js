@@ -12,9 +12,9 @@ const companySchema = new mongoose.Schema({
 
 
 // compare passwords
-companySchema.methods.matchPassword = async function(enterPassword){
-	return await bcrypt.compare(enterPassword, this.password);
-}
+companySchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
 // hash password
 companySchema.pre("save", async function(next) {

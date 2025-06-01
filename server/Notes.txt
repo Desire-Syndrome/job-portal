@@ -1,6 +1,6 @@
 //TODO: Install project
 1) npm init -y
-2) npm install express nodemon jsonwebtoken bcryptjs mongoose cors multer dotenv
+2) npm install express express-async-handler nodemon jsonwebtoken bcryptjs mongoose cors multer dotenv
 	- nodemon => automatically restarts the server when changes are detected in the source code
 	- express => used for creating servers, handling HTTP requests, and routing
 	- jsonwebtoken => create and verify tokens for authentication and authorization

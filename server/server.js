@@ -27,7 +27,7 @@ const userRoutes = require("./routes/userRoutes.js");
 app.use('/api/user', userRoutes);
 const jobRoutes = require("./routes/jobRoutes.js");
 app.use('/api/jobs', jobRoutes);
- 
+
 
 // Setup and Run Server
 const PORT = process.env.PORT || 3000; 

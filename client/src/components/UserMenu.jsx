@@ -8,7 +8,7 @@ function UserMenu() {
 	return (
 
 		<div className='flex items-center gap-3'>
-			<p>Welcome, {user.name}</p>
+			<p>{user.name}</p>
 			<div className='relative group'>
 				<img src={user.image} className='w-8 border rounded-full' alt="Company Logo" />
 				<div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-12'>

@@ -15,7 +15,7 @@ npm install axios
 7) install tailwind (like bootstrap)
 npm install -D tailwindcss@^3.4.17 postcss autoprefixer
 npx tailwindcss init -p
-npm install flowbite-react
+npm install flowbite flowbite-react
 8) install toastify to show success, errors, etc..
 npm install react-toastify
 9) install quill  to create reach text editors

@@ -15,6 +15,11 @@ app.use(cors());
 app.use(express.json());
 
 
+// use files from server
+const path = require("path");
+app.use('/uploads', express.static(path.join(__dirname, 'data', 'uploads')));
+
+
 // Routes
 // test and seeder
 app.get('/', (req, res) => { res.json({ message: 'API works!' }); });
@@ -33,3 +38,15 @@ app.use('/api/jobs', jobRoutes);
 const PORT = process.env.PORT || 3000; 
 connectDB(); 
 app.listen(PORT, () => console.log(`server listening on port ${PORT}`))
+
+
+// Global error handler
+app.use((err, req, res, next) => {
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  res.status(statusCode).json({
+    message: err.message || 'Server Error',
+  });
+});
+
+
+module.exports = app;

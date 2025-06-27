@@ -9,6 +9,7 @@ const Job = require("../models/Job.js");
 const JobApplication = require("../models/JobApplication.js");
 
 
+// companyRegistration
 const companyRegistration = AsyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -36,6 +37,7 @@ const companyRegistration = AsyncHandler(async (req, res) => {
 });
 
 
+// companyLogin
 const companyLogin = AsyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -54,8 +56,9 @@ const companyLogin = AsyncHandler(async (req, res) => {
 });
 
 
+// updateCompany
 const updateCompany = AsyncHandler(async (req, res) => {
-  const { name, email, password } = req.body; 
+  const { name, email, password } = req.body;
   const company = req.account;
 
   if (company) {
@@ -77,7 +80,7 @@ const updateCompany = AsyncHandler(async (req, res) => {
       name: updatedCompany.name,
       email: updatedCompany.email,
       token: generateToken(updatedCompany._id),
-      image: updatedCompany.image 
+      image: updatedCompany.image
     });
   } else {
     return res.status(404).json({ message: "Company not found." });
@@ -85,6 +88,7 @@ const updateCompany = AsyncHandler(async (req, res) => {
 });
 
 
+// deleteCompany
 const deleteCompany = AsyncHandler(async (req, res) => {
   const company = req.account;
 
@@ -101,6 +105,7 @@ const deleteCompany = AsyncHandler(async (req, res) => {
 });
 
 
+// postJob
 const postJob = AsyncHandler(async (req, res) => {
   const { title, description, location, salary, level, category } = req.body;
   const companyId = req.account._id;
@@ -118,23 +123,73 @@ const postJob = AsyncHandler(async (req, res) => {
 });
 
 
+// getPostedJobs
 const getPostedJobs = AsyncHandler(async (req, res) => {
+  const companyId = req.account._id;
 
+  const jobs = await Job.find({ companyId });
+  if (jobs) {
+    const jobsWithApplicants = await Promise.all(
+      jobs.map(async (job) => {
+        const applicants = await JobApplication.find({ jobId: job._id });
+        return { ...job.toObject(), applicants: applicants.length };
+      })
+    );
+    res.status(200).json({ jobs: jobsWithApplicants })
+  } else {
+    return res.status(404).json({ message: "Jobs not found." });
+  }
 });
 
 
+// getApplicants
 const getApplicants = AsyncHandler(async (req, res) => {
+  const companyId = req.account._id;
 
+  const applications = await JobApplication.find({ companyId })
+    .populate('userId', 'name resume image')
+    .populate('jobId', 'title description location category level salary');
+  return res.status(200).json({ applications });
 });
 
 
+// changeApplicationStatus
 const changeApplicationStatus = AsyncHandler(async (req, res) => {
+  const { id, status } = req.body;
+  const companyId = req.account._id;
 
+  const application = await JobApplication.findById(id);
+
+  if (!application) {
+    return res.status(404).json({ message: "Application not found." });
+  }
+  if (application.companyId.toString() !== companyId.toString()) {
+    return res.status(403).json({ message: "No permission to update application status." });
+  }
+
+  application.status = status;
+  await application.save();
+  res.status(200).json({ message: "Application status changed." });
 });
 
 
+// changeJobVisibility
 const changeJobVisibility = AsyncHandler(async (req, res) => {
+  const { id } = req.body;
+  const companyId = req.account._id;
 
+  const job = await Job.findById(id);
+
+  if (!job) {
+    return res.status(404).json({ message: "Job not found." });
+  }
+  if (job.companyId.toString() !== companyId.toString()) {
+    return res.status(403).json({ message: "No permission to change job visibility." });
+  }
+
+  job.visible = !job.visible;
+  await job.save();
+  res.json({ message: "Job visibility changed." });
 });
 
 

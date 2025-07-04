@@ -35,7 +35,7 @@ const userRegistration = AsyncHandler(async (req, res) => {
     name: user.name,
     email: user.email,
     token: null,
-    image: user.image,
+    image: user.image || null,
     resume: null
   });
 });
@@ -52,8 +52,8 @@ const userLogin = AsyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
-      image: user.image,
-      resume: user.resume
+      image: user.image || null,
+      resume: user.resume || null
     })
   } else {
     return res.status(401).json({ message: "Invalid Email or Password." });

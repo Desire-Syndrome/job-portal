@@ -1,8 +1,11 @@
 import { assetsImages } from '../assets/images-data'
-import { company as mockCompany, user as mockUser } from '../assets/mock-data'
+import { company as mockCompany } from '../assets/mock-data'
 
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
+
+import { useDispatch, useSelector } from "react-redux";
+import { userRegisterAction, userLoginAction } from "../redux/actions/UserActions"
 
 import CompanyMenu from '../components/CompanyMenu'
 import UserMenu from '../components/UserMenu'
@@ -10,8 +13,15 @@ import UserMenu from '../components/UserMenu'
 
 const Header = () => {
 
+	const dispatch = useDispatch();
+	const userRegisterReducer = useSelector((state) => state.userRegisterReducer);
+	const { loading: userRegisterLoading, error: userRegisterError, success: userRegisterSuccess } = userRegisterReducer;
+	const userLoginReducer = useSelector((state) => state.userLoginReducer);
+	const { loading: userLoginLoading, error: userLoginError, success: userLoginSuccess } = userLoginReducer;
+
+	const { userInfo } = userLoginReducer;
+
 	const [company, setCompany] = useState(null);
-	const [user, setUser] = useState(null);
 
 	const [popupState, setPopupState] = useState("Login");
 	const [popupVariation, setPopupVariation] = useState(null);
@@ -22,19 +32,41 @@ const Header = () => {
 	const [email, setEmail] = useState("");
 	const [image, setImage] = useState(null);
 
+	const [errorMessage, setErrorMessage] = useState("");
 
-	const closePopup = () => {
-		setImage(null); setName(""); setEmail(""); setPassword("");
-		setPopupState("Login"); setShowPopup(false); setPopupVariation(null);
-	}
+
+	useEffect(() => {
+		if (userRegisterSuccess) {
+			console.log("Logging in with:", email, password);
+			dispatch(userLoginAction(email, password));
+			closePopup();
+			dispatch({ type: "USER_REGISTRATION_RESET" });
+		} else if (userRegisterError) {
+			setErrorMessage(userRegisterError);
+			setTimeout(() => {
+				setErrorMessage("");
+				dispatch({ type: "USER_REGISTRATION_RESET" });
+			}, 3000);
+		}
+		if (userLoginSuccess) {
+			closePopup();
+		} else if (userLoginError) {
+			setErrorMessage(userLoginError);
+			setTimeout(() => {
+				setErrorMessage("");
+				dispatch({ type: "USER_LOGIN_FAIL", payload: "" });
+			}, 3000);
+		}
+	}, [dispatch, userRegisterError, userRegisterSuccess, userLoginError, userLoginSuccess, userInfo, email, password]);
+
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (popupVariation === "User") {
 			if (popupState === "Login") {
-				setUser(mockUser);
+				dispatch(userLoginAction(email, password));
 			} else if (popupState === "Registration") {
-				alert("Test");
+				dispatch(userRegisterAction(name, email, password, image));
 			}
 		} else if (popupVariation === "Company") {
 			if (popupState === "Login") {
@@ -43,8 +75,13 @@ const Header = () => {
 				alert("Test");
 			}
 		}
-		closePopup();
 	};
+
+
+	const closePopup = () => {
+		setImage(null); setName(""); setEmail(""); setPassword("");
+		setPopupState("Login"); setShowPopup(false); setPopupVariation(null);
+	}
 
 
 	return (<>
@@ -55,7 +92,7 @@ const Header = () => {
 			<div className='flex gap-2 md:text-sm text-xs lg:order-3'>
 				{company ? (
 					<CompanyMenu />
-				) : user ? (
+				) : userInfo ? (
 					<UserMenu />
 				) : (<>
 					<button onClick={() => { setShowPopup(true); setPopupVariation("Company") }}
@@ -104,12 +141,26 @@ const Header = () => {
 								value={password} type="password" placeholder='Password' className='no-focus text-sm border-none' required />
 						</div>
 						{popupState === 'Login' ? (<>
-							<button type='submit' className='bg-blue-600 w-full text-white rounded-full py-2 mt-3 hover:bg-blue-500 transition duration-300 ease-in-out'>Login</button>
+							<button type='submit' className='bg-blue-600 w-full text-white rounded-full py-2 mt-3 hover:bg-blue-500 transition duration-300 ease-in-out'>
+								{userLoginLoading ? "Loading..." : "Login"}
+							</button>
+							{errorMessage && (
+								<div className="mt-3 rounded-md bg-red-100 border border-red-400  px-4 py-3 text-sm text-center">
+									{errorMessage}
+								</div>
+							)}
 							<p className='text-center text-sm mt-5'>Don’t have an account?
 								<span onClick={() => setPopupState("Registration")} className='text-blue-600 cursor-pointer ms-2'>Registration</span>
 							</p>
 						</>) : (<>
-							<button type='submit' className='bg-blue-600 w-full text-white rounded-full py-2 mt-3 hover:bg-blue-500 transition duration-300 ease-in-out'>Submit</button>
+							<button type='submit' className='bg-blue-600 w-full text-white rounded-full py-2 mt-3 hover:bg-blue-500 transition duration-300 ease-in-out'>
+								{userRegisterLoading ? "Loading..." : "Submit"}
+							</button>
+							{errorMessage && (
+								<div className="mt-3 rounded-md bg-red-100 border border-red-400  px-4 py-3 text-sm text-center">
+									{errorMessage}
+								</div>
+							)}
 							<p className='text-center text-sm mt-5'>Already have an account?
 								<span onClick={() => setPopupState("Login")} className='text-blue-600 cursor-pointer ms-2 '>Login</span>
 							</p>
@@ -117,7 +168,7 @@ const Header = () => {
 					</form>
 				</div></div>
 		)}
-		
+
 	</>)
 }
 

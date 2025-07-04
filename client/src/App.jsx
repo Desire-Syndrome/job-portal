@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 
 import UseScrollToTop from "./hooks/useScrollToTop"
 
+import { useSelector } from "react-redux";
+
 import Home from './pages/Home'
 import Job from './pages/Job'
 import FAQ from './pages/FAQ'
@@ -17,6 +19,11 @@ import CompanyInfo from './pages/CompanyInfo'
 
 
 function App() {
+
+  const userLoginReducer = useSelector((state) => state.userLoginReducer);
+  const { userInfo } = userLoginReducer;
+
+
   return (
 
     <Router>
@@ -26,7 +33,7 @@ function App() {
         <Route exact path='/job/:id' element={<Job />} />
         <Route exact path='/contacts' element={<ContactUs />} />
         <Route exact path='/faq' element={<FAQ />} />
-        <Route exact path='/user' element={<UserDashboard />}>
+        <Route exact path='/user' element={userInfo ? <UserDashboard /> : <Navigate to="/" />}>
           <Route exact path='my-applications' element={<UserApplications />} />
           <Route exact path='edit-user-profile' element={<UserInfo />} />
         </Route>
@@ -38,7 +45,7 @@ function App() {
         </Route>
       </Routes>
     </Router>
-    
+
   );
 }
 

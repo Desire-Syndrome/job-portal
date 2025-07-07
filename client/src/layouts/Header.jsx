@@ -37,7 +37,6 @@ const Header = () => {
 
 	useEffect(() => {
 		if (userRegisterSuccess) {
-			console.log("Logging in with:", email, password);
 			dispatch(userLoginAction(email, password));
 			closePopup();
 			dispatch({ type: "USER_REGISTRATION_RESET" });

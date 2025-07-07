@@ -26,10 +26,16 @@ const storage = multer.memoryStorage();
 // file filter
 const fileFilter = (req, file, cb) => {
   const type = file.fieldname;
-  if (!settings[type]) return cb(new Error("Invalid field name"), false);
+  if (!settings[type]) {
+    return cb(new Error("Invalid field name"), false);
+  }
   const isValid = settings[type].mimeTypes.includes(file.mimetype);
-  cb(null, isValid);
+  if (!isValid) {
+    return cb(new Error(`Unsupported file format for ${type}.`), false);
+  }
+  cb(null, true);
 };
+
 // init multer
 const upload = multer({ storage, fileFilter });
 

@@ -4,13 +4,22 @@ import { Link, NavLink, Outlet } from "react-router-dom"
 
 import UserMenu from '../components/UserMenu'
 
+import { useDispatch } from "react-redux";
+import { userLogoutAction } from "../redux/actions/UserActions"
+
 
 const UserDashboard = () => {
+
+	const dispatch = useDispatch();
+
+	const logoutHandler = () => {
+		dispatch(userLogoutAction());
+	}
+
 	
 	return (
-
-		<div className="min-h-screen">
-			{/* NavBar for Recruters*/}
+		
+			<div className="min-h-screen">
 			<div className='shadow py-4'>
 				<div className='px-5 flex justify-between items-center'>
 					<Link to="/"><img src={assetsImages.logo} className='max-sm:w-32 cursor-pointer' alt="Logo" /></Link>
@@ -18,7 +27,6 @@ const UserDashboard = () => {
 				</div>
 			</div>
 			<div className='flex items-start'>
-				{/* Left SideBar */}
 				<div className=' border-r-2 max-w-1/4 border-b-2 md:border-hidden'>
 					<ul className='flex flex-col items-start pt-5 pb-2 text-gray-800'>
 						<li className='w-full'><NavLink to={'/'} className='flex items-center p-3 md:px-6 gap-2 w-full'>
@@ -30,12 +38,11 @@ const UserDashboard = () => {
 						<li className='w-full mt-2 border-t-2'><NavLink to={'/user/edit-user-profile'} className={({ isActive }) => `flex items-center p-3 md:px-6 gap-2 w-full mt-2 ${isActive && 'bg-blue-100'}`} >
 							<img src={assetsImages.icon2} className='w-5' alt="icon" /><p className='max-md:hidden'>Edit Profile</p>
 						</NavLink></li>
-						<li className='flex items-center p-3 md:px-6 gap-2 w-full cursor-pointer' >
+						<li onClick={logoutHandler} className='flex items-center p-3 md:px-6 gap-2 w-full cursor-pointer' >
 							<img src={assetsImages.icon3} className='w-5' alt="icon" /><p className='max-md:hidden'>Logout</p>
 						</li>
 					</ul>
 				</div>
-				{/* content */}
 				<div className='w-3/4 ms-10'>
 					<Outlet />
 				</div>

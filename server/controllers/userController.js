@@ -69,7 +69,9 @@ const updateUser = AsyncHandler(async (req, res) => {
   if (user) {
     user.name = name || user.name;
     user.email = email || user.email;
-    user.password = password || user.password;
+    if(password){
+      user.password = password
+    }
 
     if (req.files?.avatar && req.files.avatar.length > 0) {
       if (user.image) {

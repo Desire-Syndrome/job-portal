@@ -1,4 +1,4 @@
-import { userApplications } from '../assets/mock-data'
+import { userApplications } from '../../assets/mock-data'
 
 import { Link } from "react-router-dom"
 

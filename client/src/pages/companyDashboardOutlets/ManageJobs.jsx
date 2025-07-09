@@ -1,4 +1,4 @@
-import { manageJobs } from '../assets/mock-data'
+import { manageJobs } from '../../assets/mock-data'
 
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"

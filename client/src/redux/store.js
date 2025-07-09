@@ -10,12 +10,18 @@ const persistConfig = {
 
 
 import {
-userRegisterReducer, userLoginReducer, userUpdateReducer, userRemoveReducer
+userRegisterReducer, userLoginReducer, userUpdateReducer, userRemoveReducer,
 } from "./reducers/UserReducer";
+import {
+companyRegisterReducer, companyLoginReducer, companyUpdateReducer, companyRemoveReducer,
+} from "./reducers/CompanyReducer";
 
 
 const rootReducer = combineReducers({
-	 userRegisterReducer, userLoginReducer, userUpdateReducer, userRemoveReducer
+	 userRegisterReducer, userLoginReducer, userUpdateReducer, userRemoveReducer,
+
+	 companyRegisterReducer, companyLoginReducer, companyUpdateReducer, companyRemoveReducer,
+	 
 });
 
 

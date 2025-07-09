@@ -1,5 +1,5 @@
-import { assetsImages } from '../assets/images-data'
-import { manageApplications } from '../assets/mock-data'
+import { assetsImages } from '../../assets/images-data'
+import { manageApplications } from '../../assets/mock-data'
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom"

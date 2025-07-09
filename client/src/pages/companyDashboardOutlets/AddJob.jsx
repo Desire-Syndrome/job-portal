@@ -1,4 +1,4 @@
-import { jobCategories, jobLocations, jobLevels } from '../assets/mock-data'
+import { jobCategories, jobLocations, jobLevels } from '../../assets/mock-data'
 
 import { useState, useEffect, useRef } from "react";
 

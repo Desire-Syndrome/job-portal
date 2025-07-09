@@ -50,19 +50,6 @@ export const userUpdateReducer = (state = {}, action) => {
 	}
 }
 
-export const userApplyReducer = (state = {}, action) => {
-	switch (action.type) {
-		case USER_APPLY_REQ:
-			return { loading: true };
-		case USER_APPLY_SUCCESS:
-			return { loading: false, success: true };
-		case USER_APPLY_FAIL:
-			return { loading: false, error: action.payload };
-		case USER_APPLY_RESET:
-			return {};
-		default: return state;
-	}
-}
 
 export const userRemoveReducer = (state = {}, action) => {
 	switch (action.type) {
@@ -78,18 +65,4 @@ export const userRemoveReducer = (state = {}, action) => {
 	}
 }
 
-const initUserApplicationsState = { data: [], loading: false, error: null };
-export const nasaEpicReducer = (state = initUserApplicationsState, action) => {
-  switch (action.type) {
-    case USER_APPLICATIONS_REQ:
-      return { ...state, loading: true };
-    case USER_APPLICATIONS_SUCCESS:
-      return { loading: false, data: action.payload, error: null };
-    case USER_APPLICATIONS_FAIL:
-      return { loading: false, data: [], error: action.payload };
-    case USER_APPLICATIONS_RESET:
-      return { ...initUserApplicationsState };
-    default:
-      return state;
-  }
-};
+ 

@@ -1,5 +1,5 @@
-import { assetsImages } from '../assets/images-data'
-import { company } from '../assets/mock-data'
+import { assetsImages } from '../../assets/images-data'
+import { company } from '../../assets/mock-data'
 
 import { useState } from "react";
 

@@ -1,13 +1,20 @@
 import { assetsImages } from '../assets/images-data'
-import { jobCategories, jobLocations, jobs } from '../assets/mock-data'
+import { jobCategories, jobLocations } from '../assets/mock-data'
 
 import { useState, useEffect, useRef } from "react"
+
+import { useDispatch, useSelector } from "react-redux"; 
+import { getJobsListAction } from "../redux/actions/JobActions.js"
 
 import Layouts from '../layouts/Layouts'
 import JobCard from '../components/JobCard.jsx'
 
 
 const Home = () => {
+
+	const dispatch = useDispatch();
+	const jobsListReducer = useSelector((state) => state.jobsListReducer);
+	const { loading: jobsLoading, jobs = [] } = jobsListReducer;
 
 	const [showFilters, setShowFilters] = useState(false);
 	const [selectedCategories, setSelectedCategories] = useState([]);
@@ -18,6 +25,10 @@ const Home = () => {
 	const [searchByTitle, setSearchByTitle] = useState("");
 	const titleRef = useRef(null);
 
+
+	useEffect(() => {
+		dispatch(getJobsListAction()); 	
+	}, [dispatch]);
 
 	// functions for filter and search
 	const handleCategoryChange = (category) => {
@@ -40,7 +51,7 @@ const Home = () => {
 			job => matchesCategory(job) && matchesLocation(job) && matchesTitle(job)
 		)
 		setFilteredJobs(newFilteredJobs);
-	}, [selectedCategories, selectedLocations, searchByTitle])
+	}, [selectedCategories, selectedLocations, searchByTitle, jobs])
 
 
 	return (<Layouts>

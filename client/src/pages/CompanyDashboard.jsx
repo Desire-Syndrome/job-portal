@@ -4,8 +4,18 @@ import { Link, NavLink, Outlet } from "react-router-dom"
 
 import CompanyMenu from '../components/CompanyMenu'
 
+import { useDispatch } from "react-redux";
+import { companyLogoutAction } from "../redux/actions/CompanyActions"
+
 
 const CompanyDashboard = () => {
+
+		const dispatch = useDispatch();
+	
+		const logoutHandler = () => {
+			dispatch(companyLogoutAction());
+		}
+
 
 	return (
 
@@ -34,7 +44,7 @@ const CompanyDashboard = () => {
 						<li className='w-full mt-2 border-t-2'><NavLink to={'/dashboard/edit-company-profile'} className={({ isActive }) => `flex items-center p-3 md:px-6 gap-2 w-full mt-2 ${isActive && 'bg-blue-100'}`} >
 							<img src={assetsImages.icon2} className='w-5' alt="icon" /><p className='max-md:hidden'>Edit Profile</p>
 						</NavLink></li>
-						<li className='flex items-center p-3 md:px-6 gap-2 w-full cursor-pointer' >
+						<li onClick={logoutHandler} className='flex items-center p-3 md:px-6 gap-2 w-full cursor-pointer' >
 							<img src={assetsImages.icon3} className='w-5' alt="icon" /><p className='max-md:hidden'>Logout</p>
 						</li>
 					</ul>

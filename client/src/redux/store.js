@@ -15,13 +15,15 @@ userRegisterReducer, userLoginReducer, userUpdateReducer, userRemoveReducer,
 import {
 companyRegisterReducer, companyLoginReducer, companyUpdateReducer, companyRemoveReducer,
 } from "./reducers/CompanyReducer";
+import {
+jobsListReducer,
+} from "./reducers/JobReducer";
 
 
 const rootReducer = combineReducers({
 	 userRegisterReducer, userLoginReducer, userUpdateReducer, userRemoveReducer,
-
 	 companyRegisterReducer, companyLoginReducer, companyUpdateReducer, companyRemoveReducer,
-	 
+	 jobsListReducer
 });
 
 

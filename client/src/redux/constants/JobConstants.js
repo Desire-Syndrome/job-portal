@@ -1,0 +1,9 @@
+export const GET_ALL_JOBS_REQ = "GET_ALL_JOBS_REQ";
+export const GET_ALL_JOBS_SUCCESS = "GET_ALL_JOBS_SUCCESS";
+export const GET_ALL_JOBS_FAIL = "GET_ALL_JOBS_FAIL";
+export const GET_ALL_JOBS_RESET = "GET_ALL_JOBS_RESET";
+
+export const GET_JOB_REQ = "GET_JOB_REQ";
+export const GET_JOB_SUCCESS = "GET_JOB_SUCCESS";
+export const GET_JOB_FAIL = "GET_JOB_FAIL";
+export const GET_JOB_RESET = "GET_JOB_RESET";

@@ -1,11 +1,11 @@
 import { assetsImages } from '../assets/images-data'
-import { company as mockCompany } from '../assets/mock-data'
 
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 
 import { useDispatch, useSelector } from "react-redux";
 import { userRegisterAction, userLoginAction } from "../redux/actions/UserActions"
+import { companyRegisterAction, companyLoginAction } from "../redux/actions/CompanyActions"
 
 import CompanyMenu from '../components/CompanyMenu'
 import UserMenu from '../components/UserMenu'
@@ -18,10 +18,14 @@ const Header = () => {
 	const { loading: userRegisterLoading, error: userRegisterError, success: userRegisterSuccess } = userRegisterReducer;
 	const userLoginReducer = useSelector((state) => state.userLoginReducer);
 	const { loading: userLoginLoading, error: userLoginError, success: userLoginSuccess } = userLoginReducer;
+	const companyRegisterReducer = useSelector((state) => state.companyRegisterReducer);
+	const { loading: companyRegisterLoading, error: companyRegisterError, success: companyRegisterSuccess } = companyRegisterReducer;
+	const companyLoginReducer = useSelector((state) => state.companyLoginReducer);
+	const { loading: companyLoginLoading, error: companyLoginError, success: companyLoginSuccess } = companyLoginReducer;
 
 	const { userInfo } = userLoginReducer;
+	const { companyInfo } = companyLoginReducer;
 
-	const [company, setCompany] = useState(null);
 
 	const [popupState, setPopupState] = useState("Login");
 	const [popupVariation, setPopupVariation] = useState(null);
@@ -47,7 +51,18 @@ const Header = () => {
 				dispatch({ type: "USER_REGISTRATION_RESET" });
 			}, 3000);
 		}
-		if (userLoginSuccess) {
+		if (companyRegisterSuccess) {
+			dispatch(companyLoginAction(email, password));
+			closePopup();
+			dispatch({ type: "COMPANY_REGISTRATION_RESET" });
+		} else if (companyRegisterError) {
+			setErrorMessage(companyRegisterError);
+			setTimeout(() => {
+				setErrorMessage("");
+				dispatch({ type: "COMPANY_REGISTRATION_RESET" });
+			}, 3000);
+		}
+		if (userLoginSuccess || companyLoginSuccess) {
 			closePopup();
 		} else if (userLoginError) {
 			setErrorMessage(userLoginError);
@@ -55,8 +70,14 @@ const Header = () => {
 				setErrorMessage("");
 				dispatch({ type: "USER_LOGIN_FAIL", payload: "" });
 			}, 3000);
+		} else if (companyLoginError) {
+			setErrorMessage(companyLoginError);
+			setTimeout(() => {
+				setErrorMessage("");
+				dispatch({ type: "COMPANY_LOGIN_FAIL", payload: "" });
+			}, 3000);
 		}
-	}, [dispatch, userRegisterError, userRegisterSuccess, userLoginError, userLoginSuccess, userInfo, email, password]);
+	}, [dispatch, email, password, userRegisterError, userRegisterSuccess, userLoginError, userLoginSuccess, userInfo, companyRegisterError, companyRegisterSuccess, companyLoginError, companyLoginSuccess, companyInfo ]);
 
 
 	const handleSubmit = async (e) => {
@@ -69,9 +90,9 @@ const Header = () => {
 			}
 		} else if (popupVariation === "Company") {
 			if (popupState === "Login") {
-				setCompany(mockCompany);
+				dispatch(companyLoginAction(email, password));
 			} else if (popupState === "Registration") {
-				alert("Test");
+				dispatch(companyRegisterAction(name, email, password, image));
 			}
 		}
 	};
@@ -89,7 +110,7 @@ const Header = () => {
 			<Link to="/" className='w-[160px] md:w-[210px]'><img src={assetsImages.logo} className='w-full' alt="Logo" /></Link>
 			{/* User Menu and Login Buttons */}
 			<div className='flex gap-2 md:text-sm text-xs lg:order-3'>
-				{company ? (
+				{companyInfo ? (
 					<CompanyMenu />
 				) : userInfo ? (
 					<UserMenu />
@@ -141,7 +162,7 @@ const Header = () => {
 						</div>
 						{popupState === 'Login' ? (<>
 							<button type='submit' className='bg-blue-600 w-full text-white rounded-full py-2 mt-3 hover:bg-blue-500 transition duration-300 ease-in-out'>
-								{userLoginLoading ? "Loading..." : "Login"}
+								{userLoginLoading || companyLoginLoading ? "Loading..." : "Login"}
 							</button>
 							{errorMessage && (
 								<div className="mt-3 rounded-md bg-red-100 border border-red-400  px-4 py-3 text-sm text-center">
@@ -153,7 +174,7 @@ const Header = () => {
 							</p>
 						</>) : (<>
 							<button type='submit' className='bg-blue-600 w-full text-white rounded-full py-2 mt-3 hover:bg-blue-500 transition duration-300 ease-in-out'>
-								{userRegisterLoading ? "Loading..." : "Submit"}
+								{userRegisterLoading || companyRegisterLoading ? "Loading..." : "Submit"}
 							</button>
 							{errorMessage && (
 								<div className="mt-3 rounded-md bg-red-100 border border-red-400  px-4 py-3 text-sm text-center">

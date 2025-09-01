@@ -8,7 +8,9 @@ const JobCard = ({ job }) => {
 	return (
 
 		<div className="border p-6 shadow rounded">
-			<div className="flex justify-between items-center"><img className="h-12 w-12" src={job.companyId.image} alt="Company logo" /></div>
+			<div className="flex justify-between items-center">
+				{/* <img className="h-12 w-12" src={job.companyId.image} alt="Company logo" />  */}
+			</div>
 			<h4 className="font-medium text-xl mt-2">{job.title}</h4>
 			<div className="flex items-center mt-3 gap-3 text-xs">
 				<span className="bg-blue-100 border-blue-200 border px-4 py-1.5 rounded">{job.location}</span>

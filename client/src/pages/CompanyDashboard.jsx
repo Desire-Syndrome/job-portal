@@ -12,6 +12,7 @@ const CompanyDashboard = () => {
 
 		const dispatch = useDispatch();
 	
+		
 		const logoutHandler = () => {
 			dispatch(companyLogoutAction());
 		}

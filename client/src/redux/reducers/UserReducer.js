@@ -66,3 +66,17 @@ export const userRemoveReducer = (state = {}, action) => {
 }
 
  
+export const userApplyReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_APPLY_REQ:
+      return { loading: true };
+    case USER_APPLY_SUCCESS:
+      return { loading: false, success: true };
+    case USER_APPLY_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_APPLY_RESET:
+      return {};
+    default:
+      return state;
+  }
+};

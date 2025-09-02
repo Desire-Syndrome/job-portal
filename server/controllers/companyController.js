@@ -64,7 +64,9 @@ const updateCompany = AsyncHandler(async (req, res) => {
   if (company) {
     company.name = name || company.name;
     company.email = email || company.email;
-    company.password = password || company.password;
+        if(password){
+      company.password = password
+    }
 
     if (req.files?.logo && req.files.logo.length > 0) {
       if (company.image) {
@@ -110,9 +112,12 @@ const postJob = AsyncHandler(async (req, res) => {
   const { title, description, location, salary, level, category } = req.body;
   const companyId = req.account._id;
 
-  if (!title || !description || !location || !salary || !level || !category) {
+  if (!title || !location || !salary || !level || !category) {
     return res.status(400).json({ message: "Missing details." });
   }
+  if (description.replace(/<(.|\n)*?>/g, '').trim().length === 0) { // catch empty data from quill editor
+  return res.status(400).json({ message: "Missing details." });
+}
 
   const job = new Job({
     title, description, location, salary, level, category, companyId,

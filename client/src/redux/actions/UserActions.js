@@ -1,6 +1,6 @@
-import axios from 'axios';
-
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+import axios from 'axios';
 
 import {
 	USER_REGISTRATION_REQ, USER_REGISTRATION_SUCCESS, USER_REGISTRATION_FAIL, USER_REGISTRATION_RESET,
@@ -10,6 +10,7 @@ import {
 	USER_APPLY_REQ, USER_APPLY_SUCCESS, USER_APPLY_FAIL, USER_APPLY_RESET,
 	USER_APPLICATIONS_REQ, USER_APPLICATIONS_SUCCESS, USER_APPLICATIONS_FAIL, USER_APPLICATIONS_RESET
 } from "../constants/UserConstants";
+
 
 export const userRegisterAction = (name, email, password, avatar) => async (dispatch) => {
 	try {
@@ -29,7 +30,6 @@ export const userRegisterAction = (name, email, password, avatar) => async (disp
 			axios.post(`${BASE_URL}/api/user/registration`, formData).then(res => res.data),
 			new Promise((resolve) => setTimeout(resolve, 1500))
 		]);
-
 		dispatch({
 			type: USER_REGISTRATION_SUCCESS,
 			payload: data
@@ -54,11 +54,11 @@ export const userLoginAction = (email, password) => async (dispatch) => {
 		const config = {
 			headers: { "Content-Type": "application/json" }
 		}
+
 		const [data] = await Promise.all([
 			axios.post(`${BASE_URL}/api/user/login`, { email, password }, config).then(res => res.data),
 			new Promise((resolve) => setTimeout(resolve, 500))
 		]);
-
 		dispatch({
 			type: USER_LOGIN_SUCCESS,
 			payload: data
@@ -102,11 +102,11 @@ export const userUpdateAction = (updatedUser) => async (dispatch, getState) => {
 				"Content-Type": "multipart/form-data"
 			}
 		};
+
 		const [data] = await Promise.all([
 			axios.put(`${BASE_URL}/api/user/profile`, updatedUser, config).then(res => res.data),
 			new Promise((resolve) => setTimeout(resolve, 500))
 		]);
-
 		dispatch({
 			type: USER_UPDATE_SUCCESS,
 			payload: data
@@ -141,8 +141,8 @@ export const userRemoveAction = () => async (dispatch, getState) => {
 		const config = {
 			headers: { Authorization: `Bearer ${userInfo.token}` }
 		};
-		await axios.delete(`${BASE_URL}/api/user/profile`, config);
 
+		await axios.delete(`${BASE_URL}/api/user/profile`, config);
 		dispatch({
 			type: USER_REMOVE_SUCCESS
 		});
@@ -154,3 +154,37 @@ export const userRemoveAction = () => async (dispatch, getState) => {
 		});
 	}
 }
+
+
+export const applyForJobAction = (jobId) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: USER_APPLY_REQ
+		});
+
+		const userInfo = getState().userLoginReducer.userInfo;
+		if (!userInfo || !userInfo.token) {
+			throw new Error("User not authenticated");
+		}
+
+		const config = {
+			headers: { Authorization: `Bearer ${userInfo.token}` },
+		};
+
+		const [data] = await Promise.all([
+			axios.post(`${BASE_URL}/api/user/apply`, { jobId }, config).then(res => res.data),
+			new Promise((resolve) => setTimeout(resolve, 500))
+		]);
+		dispatch({
+			type: USER_APPLY_SUCCESS,
+			payload: data
+		});
+	} catch (error) {
+		setTimeout(() => {
+			dispatch({
+				type: USER_APPLY_FAIL,
+				payload: error.response && error.response.data.message ? error.response.data.message : error.message
+			});
+		}, 500);
+	}
+};

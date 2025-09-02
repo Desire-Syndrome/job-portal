@@ -68,4 +68,17 @@ export const companyRemoveReducer = (state = {}, action) => {
 	}
 }
 
- 
+
+export const companyAddJobReducer = (state = {}, action) => {
+	switch (action.type) {
+		case COMPANY_POST_JOB_REQ:
+			return { loading: true }
+		case COMPANY_POST_JOB_SUCCESS: 
+			return { loading: false, success: true, job: action.payload.job }
+		case COMPANY_POST_JOB_FAIL: 
+			return { loading: false, error: action.payload }
+			case COMPANY_POST_JOB_RESET: 
+			return {};
+		default: return state
+	}
+}

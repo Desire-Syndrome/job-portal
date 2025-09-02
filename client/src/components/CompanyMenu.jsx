@@ -9,13 +9,13 @@ import { companyLogoutAction } from "../redux/actions/CompanyActions"
 
 function CompanyMenu() {
 
-		const dispatch = useDispatch();
-		const { companyInfo } = useSelector((state) => state.companyLoginReducer);
-	
-	
-		const logoutHandler = () => {
-			dispatch(companyLogoutAction());
-		}
+	const dispatch = useDispatch();
+	const { companyInfo } = useSelector((state) => state.companyLoginReducer);
+
+
+	const logoutHandler = () => {
+		dispatch(companyLogoutAction());
+	}
 
 
 	return (
@@ -42,7 +42,7 @@ function CompanyMenu() {
 				</div>
 			</div>
 		</div>
-		
+
 	)
 }
 

@@ -82,6 +82,7 @@ const Header = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		
 		if (popupVariation === "User") {
 			if (popupState === "Login") {
 				dispatch(userLoginAction(email, password));
@@ -108,8 +109,8 @@ const Header = () => {
 
 		<div className='shadow py-4'><div className='max-w-[1900px] px-4 2xl:px-20 mx-auto flex flex-wrap justify-between items-center lg:order-1'>
 			<Link to="/" className='w-[160px] md:w-[210px]'><img src={assetsImages.logo} className='w-full' alt="Logo" /></Link>
-			{/* User Menu and Login Buttons */}
 			<div className='flex gap-2 md:text-sm text-xs lg:order-3'>
+
 				{companyInfo ? (
 					<CompanyMenu />
 				) : userInfo ? (
@@ -120,8 +121,8 @@ const Header = () => {
 					<button onClick={() => { setShowPopup(true); setPopupVariation("User") }}
 						className='bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-500 transition duration-300 ease-in-out'>User Login</button>
 				</>)}
+
 			</div>
-			{/* Main Menu */}
 			<div className='lg:order-2 w-full lg:w-auto mt-4 lg:mt-0'><ul className='flex justify-center items-center font-semibold'>
 				<li><Link to={'/'} className='text-black md:text-lg text-md px-1 md:px-2 mx-2 hover:text-gray-600 transition duration-300 ease-in-out'>Home</Link></li>
 				<li><Link to={'/faq'} className='text-black md:text-lg text-md px-1 md:px-2 mx-2 hover:text-gray-600 transition duration-300 ease-in-out'>FAQ</Link></li>
@@ -129,13 +130,14 @@ const Header = () => {
 			</ul></div>
 		</div></div>
 
-		{/* Popup */}
+
 		{showPopup && (
 			<div className="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center z-100"><div onClick={closePopup} className='fixed inset-0 z-150'></div>
 				<div className="bg-white rounded-lg shadow p-6 w-80 lg:w-96 relative border-blue-600 border-opacity-70 border-2 z-200">
 					<button className="absolute top-2 right-3 text-gray-500" onClick={closePopup}>✕</button>
 					<h2 className="text-lg text-center font-semibold mb-4">{popupVariation} {popupState}</h2>
 					<form onSubmit={handleSubmit}>
+
 						{popupState === 'Registration' && (<>
 							<div className='text-center my-6 w-100 py-2 bg-slate-200 rounded-lg'>
 								<label htmlFor="image">
@@ -150,6 +152,7 @@ const Header = () => {
 									value={name} placeholder={popupVariation === "Company" ? ('Company title') : ('Name')} className='no-focus text-sm border-none' type="text" required />
 							</div>
 						</>)}
+
 						<div className='border border-gray-300 px-4 py-2 flex items-center gap-2 rounded-full mt-2'>
 							<img src={assetsImages.email_icon} className='h-4 w-4' alt="email icon" />
 							<input onChange={e => setEmail(e.target.value)}
@@ -160,6 +163,7 @@ const Header = () => {
 							<input onChange={e => setPassword(e.target.value)}
 								value={password} type="password" placeholder='Password' className='no-focus text-sm border-none' required />
 						</div>
+
 						{popupState === 'Login' ? (<>
 							<button type='submit' className='bg-blue-600 w-full text-white rounded-full py-2 mt-3 hover:bg-blue-500 transition duration-300 ease-in-out'>
 								{userLoginLoading || companyLoginLoading ? "Loading..." : "Login"}
@@ -185,6 +189,7 @@ const Header = () => {
 								<span onClick={() => setPopupState("Login")} className='text-blue-600 cursor-pointer ms-2 '>Login</span>
 							</p>
 						</>)}
+						
 					</form>
 				</div></div>
 		)}

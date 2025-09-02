@@ -1,6 +1,6 @@
-import axios from 'axios';
-
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+import axios from 'axios';
 
 import {
 	COMPANY_REGISTRATION_REQ, COMPANY_REGISTRATION_SUCCESS, COMPANY_REGISTRATION_FAIL, COMPANY_REGISTRATION_RESET,
@@ -33,7 +33,6 @@ export const companyRegisterAction = (name, email, password, logo) => async (dis
 			axios.post(`${BASE_URL}/api/company/registration`, formData).then(res => res.data),
 			new Promise((resolve) => setTimeout(resolve, 1500))
 		]);
-
 		dispatch({
 			type: COMPANY_REGISTRATION_SUCCESS,
 			payload: data
@@ -58,11 +57,11 @@ export const companyLoginAction = (email, password) => async (dispatch) => {
 		const config = {
 			headers: { "Content-Type": "application/json" }
 		}
+
 		const [data] = await Promise.all([
 			axios.post(`${BASE_URL}/api/company/login`, { email, password }, config).then(res => res.data),
 			new Promise((resolve) => setTimeout(resolve, 500))
 		]);
-
 		dispatch({
 			type: COMPANY_LOGIN_SUCCESS,
 			payload: data
@@ -106,11 +105,11 @@ export const companyUpdateAction = (updatedCompany) => async (dispatch, getState
 				"Content-Type": "multipart/form-data"
 			}
 		};
+
 		const [data] = await Promise.all([
 			axios.put(`${BASE_URL}/api/company/profile`, updatedCompany, config).then(res => res.data),
 			new Promise((resolve) => setTimeout(resolve, 500))
 		]);
-
 		dispatch({
 			type: COMPANY_UPDATE_SUCCESS,
 			payload: data
@@ -145,8 +144,8 @@ export const companyRemoveAction = () => async (dispatch, getState) => {
 		const config = {
 			headers: { Authorization: `Bearer ${companyInfo.token}` }
 		};
-		await axios.delete(`${BASE_URL}/api/company/profile`, config);
 
+		await axios.delete(`${BASE_URL}/api/company/profile`, config);
 		dispatch({
 			type: COMPANY_REMOVE_SUCCESS
 		});
@@ -156,5 +155,39 @@ export const companyRemoveAction = () => async (dispatch, getState) => {
 			type: COMPANY_REMOVE_FAIL,
 			payload: error.response && error.response.data.message ? error.response.data.message : error.message
 		});
+	}
+}
+
+
+export const companyAddJobAction = (jobData) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: COMPANY_POST_JOB_REQ
+		});
+
+		const companyInfo = getState().companyLoginReducer.companyInfo;
+		if (!companyInfo || !companyInfo.token) {
+			throw new Error("Company not authenticated");
+		}
+
+		const config = {
+			headers: { Authorization: `Bearer ${companyInfo.token}` }
+		}
+
+		const [data] = await Promise.all([
+			axios.post(`${BASE_URL}/api/company/post-job`, jobData, config).then(res => res.data),
+			new Promise((resolve) => setTimeout(resolve, 1500))
+		]);
+		dispatch({
+			type: COMPANY_POST_JOB_SUCCESS,
+			payload: data
+		});
+	} catch (error) {
+		setTimeout(() => {
+			dispatch({
+				type: COMPANY_POST_JOB_FAIL,
+				payload: error.response && error.response.data.message ? error.response.data.message : error.message
+			});
+		}, 500);
 	}
 }

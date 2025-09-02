@@ -4,7 +4,7 @@ import { assetsImages } from '../../assets/images-data'
 import { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { userUpdateAction, userRemoveAction } from "../../redux/actions/UserActions"
+import { userUpdateAction, userRemoveAction, userLogoutAction } from "../../redux/actions/UserActions"
 
 
 const UserInfo = () => {
@@ -53,8 +53,9 @@ const UserInfo = () => {
 	}, [dispatch, updateError, updateSuccess, removeError, removeSuccess, userInfo]);
 
 
-	const userUpdateHandler = (e) => {
+	const updateHandler = (e) => {
 		e.preventDefault();
+		
 		const formData = new FormData();
 		formData.append("name", name);
 		formData.append("email", email);
@@ -65,14 +66,20 @@ const UserInfo = () => {
 	};
 
 
-	const userRemoveHandler = () => {
+	const removeHandler = () => {
 		setModalMessage("Are you sure you want to delete your profile?");
 		setModalVisible(true);
 	};
 
-	const confirmUserRemoveHandler = () => {
+	const confirmRemoveHandler = () => {
 		dispatch(userRemoveAction());
 	};
+
+		const exitAfterRemoveHandler = () => {
+			dispatch(userLogoutAction());
+			dispatch({ type: "USER_REMOVE_RESET" });
+			setModalVisible(false);
+		};
 
 
 	const imageChange = (e) => {
@@ -84,7 +91,7 @@ const UserInfo = () => {
 
 	return (<>
 
-		<form onSubmit={userUpdateHandler} className='container max-w-2xl py-8 flex flex-col w-full items-start gap-3'>
+		<form onSubmit={updateHandler} className='container max-w-2xl py-8 flex flex-col w-full items-start gap-3'>
 			<div className='w-full py-4 bg-slate-200 rounded-lg'>
 				<label htmlFor="image">
 					<img src={previewImage ? previewImage : userInfo.image ? `${BASE_URL}${userInfo.image}` : assetsImages.upload_area}
@@ -139,7 +146,7 @@ const UserInfo = () => {
 			<div className='mt-5 flex items-center'>
 				<button disabled={updateLoading}
 					className="font-medium text-center bg-blue-600 rounded px-5 md:px-8 py-3 text-white text-sm md:text-base hover:bg-blue-500 transition duration-300 ease-in-out">Update Profile</button>
-				<button onClick={userRemoveHandler}
+				<button onClick={removeHandler}
 					type="button" className="ms-5 font-medium text-center rounded px-5 md:px-8 py-3 text-gray-800 text-sm md:text-base bg-slate-200 hover:bg-gray-300 transition duration-300 ease-in-out">Delete Profile</button>
 			</div>
 		</form>
@@ -156,10 +163,10 @@ const UserInfo = () => {
 						{!removeSuccess ? (<>
 							<button onClick={() => { dispatch({ type: "USER_REMOVE_RESET" }); setModalVisible(false); }}
 								type="button" className="text-sm font-medium px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-800 transition duration-300 ease-in-out">Cancel</button>
-							<button onClick={confirmUserRemoveHandler}
+							<button onClick={confirmRemoveHandler}
 								type="button" className="text-white text-sm font-medium px-4 py-2 rounded bg-blue-600 hover:bg-blue-500 transition duration-300 ease-in-out">Yes, Delete</button>
 						</>) : (
-							<button onClick={() => { dispatch({ type: "USER_LOGOUT" }); dispatch({ type: "USER_REMOVE_RESET" }); setModalVisible(false); }}
+							<button onClick={exitAfterRemoveHandler}
 								type="button" className="text-white text-sm font-medium px-4 py-2 rounded bg-blue-600 hover:bg-blue-500 transition duration-300 ease-in-out">OK</button>
 						)}
 

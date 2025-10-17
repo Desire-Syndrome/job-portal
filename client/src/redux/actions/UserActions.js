@@ -188,3 +188,32 @@ export const applyForJobAction = (jobId) => async (dispatch, getState) => {
 		}, 500);
 	}
 };
+ 
+
+export const userApplicationsAction = () => async (dispatch, getState) => {
+	try {
+		dispatch({ 
+			type: USER_APPLICATIONS_REQ 
+		});
+
+		    const userInfo = getState().userLoginReducer.userInfo;
+    if (!userInfo || !userInfo.token) {
+      throw new Error("User not authenticated");
+    }
+
+		    const config = {
+      headers: { Authorization: `Bearer ${userInfo.token}` }
+    };
+    const { data } = await axios.get(`${BASE_URL}/api/user/applications`, config);
+		
+		dispatch({ 
+			type: USER_APPLICATIONS_SUCCESS,
+			payload: data
+		});
+	} catch (error) { 
+		dispatch({ 
+			type: USER_APPLICATIONS_FAIL,
+			payload: error.response && error.response.data.message ? error.response.data.message : error.message
+		});
+	}
+};

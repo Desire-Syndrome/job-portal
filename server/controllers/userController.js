@@ -186,7 +186,7 @@ const getUserApplications = AsyncHandler(async (req, res) => {
     .populate('jobId', 'title description location category level salary');
 
   if (applications.length === 0) {
-    return res.status(404).json({ success: false, message: 'No job applications found for this user.' });
+    return res.status(404).json({ success: false, message: 'No applications found...' });
   }
 
   res.json({ success: true, applications });

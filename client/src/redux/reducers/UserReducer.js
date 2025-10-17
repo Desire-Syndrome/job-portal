@@ -80,3 +80,20 @@ export const userApplyReducer = (state = {}, action) => {
       return state;
   }
 };
+
+
+const initialUserApplicationsState = { applications: [], loading: false, error: null }
+
+export const userApplicationsReducer = (state = initialUserApplicationsState, action) => {
+	switch (action.type) {
+		case USER_APPLICATIONS_REQ:
+			return { ...state, loading: true}
+		case USER_APPLICATIONS_SUCCESS: 
+			return { loading: false, applications: action.payload.applications }
+		case USER_APPLICATIONS_FAIL: 
+			return { ...state, loading: false, error: action.payload }
+		case USER_APPLICATIONS_RESET:
+			return { ...initialUserApplicationsState };
+		default: return state
+	}
+}

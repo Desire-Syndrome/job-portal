@@ -17,7 +17,8 @@ const CompanyInfo = () => {
 
 	const [name, setName] = useState(companyInfo.name);
 	const [email, setEmail] = useState(companyInfo.email);
-	const [password, setPassword] = useState("");
+		const [oldPassword, setOldPassword] = useState("");
+	const [newPassword, setNewPassword] = useState("");
 	const [image, setImage] = useState(companyInfo.image);
 	const [previewImage, setPreviewImage] = useState(null);
 
@@ -31,15 +32,18 @@ const CompanyInfo = () => {
 	useEffect(() => {
 		if (updateSuccess) {
 			setSuccessMessage("Company profile updated.");
+										setName(companyInfo.name);
+			setEmail(companyInfo.email);
 			setTimeout(() => {
-				setSuccessMessage("");
-				setPassword("");
+								setSuccessMessage("");
+				setOldPassword(""); setNewPassword("");
 				dispatch({ type: "COMPANY_UPDATE_RESET" });
 			}, 3000);
 		} else if (updateError) {
 			setErrorMessage(updateError);
 			setTimeout(() => {
 				setErrorMessage("");
+				setOldPassword(""); setNewPassword("");
 				dispatch({ type: "COMPANY_UPDATE_RESET" });
 			}, 3000);
 		}
@@ -57,7 +61,10 @@ const CompanyInfo = () => {
 		const formData = new FormData();
 		formData.append("name", name);
 		formData.append("email", email);
-		if (password) { formData.append("password", password); }
+				if (newPassword) {
+			formData.append("newPassword", newPassword);
+			formData.append("oldPassword", oldPassword);
+		}
 		if (image) { formData.append("logo", image); }
 		dispatch(companyUpdateAction(formData));
 	};
@@ -108,10 +115,17 @@ const CompanyInfo = () => {
 				<input onChange={e => setEmail(e.target.value)} value={email}
 					type="email" placeholder="" className='w-full max-w-3xl py-2 border-2 border-gray-300' />
 			</div>
-			<div className='w-full'>
-				<p className='mb-2'>Password</p>
-				<input onChange={e => setPassword(e.target.value)} value={password}
-					type="password" placeholder="" className='w-full max-w-3xl py-2 border-2 border-gray-300' />
+			<div className='w-full flex gap-x-4'>
+				<div className='w-1/2'>
+					<p className='mb-2'>Password</p>
+					<input onChange={e => setOldPassword(e.target.value)} value={oldPassword}
+						type="password" placeholder="" className='w-full py-2 border-2 border-gray-300' />
+				</div>
+				<div className='w-1/2'>
+					<p className='mb-2'>New Password</p>
+					<input onChange={e => setNewPassword(e.target.value)} value={newPassword}
+						type="password" placeholder="" className='w-full py-2 border-2 border-gray-300' />
+				</div>
 			</div>
 
 			{errorMessage && (

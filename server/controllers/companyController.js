@@ -21,6 +21,16 @@ const companyRegistration = AsyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Company already exists." });
   }
 
+  if (password.length < 6) {
+    return res.status(400).json({ message: "Password must be at least 6 characters long." });
+  }
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d).+$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      message: "Password must contain at least one uppercase letter and one number."
+    });
+  }
+
   const logoPath = await saveUploadedFile(req.files.logo[0], "logo");
 
   const company = await Company.create({
@@ -58,14 +68,37 @@ const companyLogin = AsyncHandler(async (req, res) => {
 
 // updateCompany
 const updateCompany = AsyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
-  const company = req.account;
+  const { name, email, oldPassword, newPassword } = req.body;
+  const company = await Company.findById(req.account._id);
 
   if (company) {
     company.name = name || company.name;
-    company.email = email || company.email;
-        if(password){
-      company.password = password
+
+    const existCompany = await Company.findOne({ email });
+    if (existCompany && existCompany._id.toString() !== company._id.toString()) {
+      return res.status(400).json({ message: "Company already exists." });
+    } else {
+      company.email = email || company.email;
+    }
+
+    if (newPassword) {
+      if (!oldPassword) {
+        return res.status(400).json({ message: "Please provide old password." });
+      }
+      if (newPassword.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters long." });
+      }
+      const passwordRegex = /^(?=.*[A-Z])(?=.*\d).+$/;
+      if (!passwordRegex.test(newPassword)) {
+        return res.status(400).json({
+          message: "Password must contain at least one uppercase letter and one number."
+        });
+      }
+      const isMatch = await company.matchPassword(oldPassword);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Old password is incorrect." });
+      }
+      company.password = newPassword;
     }
 
     if (req.files?.logo && req.files.logo.length > 0) {
@@ -116,8 +149,8 @@ const postJob = AsyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Missing details." });
   }
   if (description.replace(/<(.|\n)*?>/g, '').trim().length === 0) { // catch empty data from quill editor
-  return res.status(400).json({ message: "Missing details." });
-}
+    return res.status(400).json({ message: "Missing details." });
+  }
 
   const job = new Job({
     title, description, location, salary, level, category, companyId,

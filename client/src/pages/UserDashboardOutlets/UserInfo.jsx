@@ -17,7 +17,8 @@ const UserInfo = () => {
 
 	const [name, setName] = useState(userInfo.name);
 	const [email, setEmail] = useState(userInfo.email);
-	const [password, setPassword] = useState("");
+	const [oldPassword, setOldPassword] = useState("");
+	const [newPassword, setNewPassword] = useState("");
 	const [image, setImage] = useState(userInfo.image);
 	const [previewImage, setPreviewImage] = useState(null);
 	const [resume, setResume] = useState(userInfo.resume);
@@ -32,16 +33,19 @@ const UserInfo = () => {
 	useEffect(() => {
 		if (updateSuccess) {
 			setSuccessMessage("User profile updated.");
+			setName(userInfo.name);
+			setEmail(userInfo.email);
 			setResume(userInfo.resume);
 			setTimeout(() => {
 				setSuccessMessage("");
-				setPassword("");
+				setOldPassword(""); setNewPassword("");
 				dispatch({ type: "USER_UPDATE_RESET" });
 			}, 3000);
 		} else if (updateError) {
 			setErrorMessage(updateError);
 			setTimeout(() => {
 				setErrorMessage("");
+				setOldPassword(""); setNewPassword("");
 				dispatch({ type: "USER_UPDATE_RESET" });
 			}, 3000);
 		}
@@ -55,11 +59,14 @@ const UserInfo = () => {
 
 	const updateHandler = (e) => {
 		e.preventDefault();
-		
+
 		const formData = new FormData();
 		formData.append("name", name);
 		formData.append("email", email);
-		if (password) { formData.append("password", password); }
+		if (newPassword) {
+			formData.append("newPassword", newPassword);
+			formData.append("oldPassword", oldPassword);
+		}
 		if (image) { formData.append("avatar", image); }
 		if (resume) { formData.append("resume", resume); }
 		dispatch(userUpdateAction(formData));
@@ -75,11 +82,11 @@ const UserInfo = () => {
 		dispatch(userRemoveAction());
 	};
 
-		const exitAfterRemoveHandler = () => {
-			dispatch(userLogoutAction());
-			dispatch({ type: "USER_REMOVE_RESET" });
-			setModalVisible(false);
-		};
+	const exitAfterRemoveHandler = () => {
+		dispatch(userLogoutAction());
+		dispatch({ type: "USER_REMOVE_RESET" });
+		setModalVisible(false);
+	};
 
 
 	const imageChange = (e) => {
@@ -126,10 +133,17 @@ const UserInfo = () => {
 				<input onChange={e => setEmail(e.target.value)} value={email}
 					type="email" placeholder="" className='w-full py-2 border-2 border-gray-300' />
 			</div>
-			<div className='w-full'>
-				<p className='mb-2'>Password</p>
-				<input onChange={e => setPassword(e.target.value)} value={password}
-					type="password" placeholder="" className='w-full py-2 border-2 border-gray-300' />
+			<div className='w-full flex gap-x-4'>
+				<div className='w-1/2'>
+					<p className='mb-2'>Password</p>
+					<input onChange={e => setOldPassword(e.target.value)} value={oldPassword}
+						type="password" placeholder="" className='w-full py-2 border-2 border-gray-300' />
+				</div>
+				<div className='w-1/2'>
+					<p className='mb-2'>New Password</p>
+					<input onChange={e => setNewPassword(e.target.value)} value={newPassword}
+						type="password" placeholder="" className='w-full py-2 border-2 border-gray-300' />
+				</div>
 			</div>
 
 			{errorMessage && (
@@ -149,7 +163,7 @@ const UserInfo = () => {
 				<button onClick={removeHandler}
 					type="button" className="ms-5 font-medium text-center rounded px-5 md:px-8 py-3 text-gray-800 text-sm md:text-base bg-slate-200 hover:bg-gray-300 transition duration-300 ease-in-out">Delete Profile</button>
 			</div>
-		</form>
+		</form >
 
 
 		{modalVisible && (<>
@@ -173,7 +187,8 @@ const UserInfo = () => {
 					</div>
 				</div>
 			</div>
-		</>)}
+		</>)
+		}
 
 	</>)
 }

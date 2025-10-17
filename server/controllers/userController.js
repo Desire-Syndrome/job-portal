@@ -21,6 +21,16 @@ const userRegistration = AsyncHandler(async (req, res) => {
     return res.status(400).json({ message: "User already exists." });
   }
 
+  if (password.length < 6) {
+    return res.status(400).json({ message: "Password must be at least 6 characters long." });
+  }
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d).+$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      message: "Password must contain at least one uppercase letter and one number."
+    });
+  }
+
   let avatarPath = null;
   if (req.files?.avatar && req.files.avatar.length > 0) {
     avatarPath = await saveUploadedFile(req.files.avatar[0], "avatar");
@@ -63,14 +73,37 @@ const userLogin = AsyncHandler(async (req, res) => {
 
 // updateUser
 const updateUser = AsyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
-  const user = req.account;
+  const { name, email, oldPassword, newPassword } = req.body;
+  const user = await User.findById(req.account._id);
 
   if (user) {
     user.name = name || user.name;
-    user.email = email || user.email;
-    if(password){
-      user.password = password
+
+    const existUser = await User.findOne({ email });
+    if (existUser && existUser._id.toString() !== user._id.toString()) {
+      return res.status(400).json({ message: "User already exists." });
+    } else {
+      user.email = email || user.email;
+    }
+
+    if (newPassword) {
+      if (!oldPassword) {
+        return res.status(400).json({ message: "Please provide old password." });
+      }
+      if (newPassword.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters long." });
+      }
+      const passwordRegex = /^(?=.*[A-Z])(?=.*\d).+$/;
+      if (!passwordRegex.test(newPassword)) {
+        return res.status(400).json({
+          message: "Password must contain at least one uppercase letter and one number."
+        });
+      }
+      const isMatch = await user.matchPassword(oldPassword);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Old password is incorrect." });
+      }
+      user.password = newPassword;
     }
 
     if (req.files?.avatar && req.files.avatar.length > 0) {

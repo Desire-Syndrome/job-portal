@@ -31,6 +31,7 @@ const Job = () => {
 
 
 	useEffect(() => {
+		dispatch({ type: "USER_APPLY_RESET" });
 		dispatch(getJobAction(id))
 		dispatch(getJobsListAction());
 	}, [dispatch, id]);

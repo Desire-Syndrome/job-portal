@@ -166,7 +166,7 @@ const getPostedJobs = AsyncHandler(async (req, res) => {
   const companyId = req.account._id;
 
   const jobs = await Job.find({ companyId });
-  if (jobs) {
+  if (jobs && jobs.length !== 0) {
     const jobsWithApplicants = await Promise.all(
       jobs.map(async (job) => {
         const applicants = await JobApplication.find({ jobId: job._id });
@@ -175,7 +175,7 @@ const getPostedJobs = AsyncHandler(async (req, res) => {
     );
     res.status(200).json({ jobs: jobsWithApplicants })
   } else {
-    return res.status(404).json({ message: "Jobs not found." });
+    return res.status(404).json({ message: "No jobs found..." });
   }
 });
 

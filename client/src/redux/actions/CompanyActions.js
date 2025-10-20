@@ -191,3 +191,60 @@ export const companyAddJobAction = (jobData) => async (dispatch, getState) => {
 		}, 500);
 	}
 }
+
+
+export const companyGetJobsAction = () => async (dispatch, getState) => {
+	try {
+		dispatch({ 
+			type: COMPANY_GET_JOBS_REQ 
+		});
+
+		const companyInfo = getState().companyLoginReducer.companyInfo;
+    if (!companyInfo || !companyInfo.token) {
+      throw new Error("Company not authenticated");
+    }
+
+		const config = {
+      headers: { Authorization: `Bearer ${companyInfo.token}` }
+    };
+    const { data } = await axios.get(`${BASE_URL}/api/company/get-jobs`, config);
+		
+		dispatch({ 
+			type: COMPANY_GET_JOBS_SUCCESS,
+			payload: data
+		});
+	} catch (error) { 
+		dispatch({ 
+			type: COMPANY_GET_JOBS_FAIL,
+			payload: error.response && error.response.data.message ? error.response.data.message : error.message
+		});
+	}
+};
+
+
+export const companyJobVisibilityAction = (id) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: COMPANY_JOB_VISIBILITY_REQ
+		});
+
+		const companyInfo = getState().companyLoginReducer.companyInfo;
+		if (!companyInfo || !companyInfo.token) {
+			throw new Error("Company not authenticated");
+		}
+
+		const config = {
+			headers: { Authorization: `Bearer ${companyInfo.token}` }
+		};
+
+		await axios.put(`${BASE_URL}/api/company/change-visibility`, { id }, config);
+		dispatch({
+			type: COMPANY_JOB_VISIBILITY_SUCCESS
+		});
+	} catch (error) {
+		dispatch({
+			type: COMPANY_JOB_VISIBILITY_FAIL,
+			payload: error.response && error.response.data.message ? error.response.data.message : error.message
+		});
+	}
+}

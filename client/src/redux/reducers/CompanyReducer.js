@@ -131,3 +131,18 @@ export const companyApplicantsReducer = (state = initialCompanyApplicantsState, 
 		default: return state
 	}
 }
+
+
+export const companyApplicationStatusReducer = (state = {}, action) => {
+	switch (action.type) {
+		case COMPANY_APPLICANTION_STATUS_REQ:
+			return { loading: true }
+		case COMPANY_APPLICANTION_STATUS_SUCCESS:
+			return { loading: false, success: true }
+		case COMPANY_APPLICANTION_STATUS_FAIL:
+			return { loading: false, error: action.payload }
+		case COMPANY_APPLICANTION_STATUS_RESET:
+			return {};
+		default: return state
+	}
+}

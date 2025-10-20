@@ -277,3 +277,31 @@ export const companyApplicantsAction = () => async (dispatch, getState) => {
 		});
 	}
 };
+
+
+export const companyApplicationStatusAction = (id, status) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: COMPANY_APPLICANTION_STATUS_REQ
+		});
+
+		const companyInfo = getState().companyLoginReducer.companyInfo;
+		if (!companyInfo || !companyInfo.token) {
+			throw new Error("Company not authenticated");
+		}
+
+		const config = {
+			headers: { Authorization: `Bearer ${companyInfo.token}` }
+		};
+
+		await axios.put(`${BASE_URL}/api/company/change-status`, { id, status }, config);
+		dispatch({
+			type: COMPANY_APPLICANTION_STATUS_SUCCESS
+		});
+	} catch (error) {
+		dispatch({
+			type: COMPANY_APPLICANTION_STATUS_FAIL,
+			payload: error.response && error.response.data.message ? error.response.data.message : error.message
+		});
+	}
+}

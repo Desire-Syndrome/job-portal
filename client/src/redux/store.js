@@ -15,7 +15,8 @@ userApplyReducer, userApplicationsReducer
 } from "./reducers/UserReducer";
 import {
 companyRegisterReducer, companyLoginReducer, companyUpdateReducer, companyRemoveReducer,
-companyAddJobReducer, companyGetJobsReducer, companyJobVisibilityReducer, companyApplicantsReducer
+companyAddJobReducer, companyGetJobsReducer, companyJobVisibilityReducer, 
+companyApplicantsReducer, companyApplicationStatusReducer
 } from "./reducers/CompanyReducer";
 import {
 jobsListReducer, jobReducer
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
 	 userRegisterReducer, userLoginReducer, userUpdateReducer, userRemoveReducer,
 	 userApplyReducer, userApplicationsReducer,
 	 companyRegisterReducer, companyLoginReducer, companyUpdateReducer, companyRemoveReducer,
-	 companyAddJobReducer, companyGetJobsReducer, companyJobVisibilityReducer, companyApplicantsReducer,
+	 companyAddJobReducer, companyGetJobsReducer, companyJobVisibilityReducer, 
+	 companyApplicantsReducer, companyApplicationStatusReducer,
 	 jobsListReducer, jobReducer
 });
 

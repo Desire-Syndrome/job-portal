@@ -114,3 +114,20 @@ export const companyJobVisibilityReducer = (state = {}, action) => {
 		default: return state
 	}
 }
+
+
+const initialCompanyApplicantsState = { applications: [], loading: false, error: null }
+
+export const companyApplicantsReducer = (state = initialCompanyApplicantsState, action) => {
+	switch (action.type) {
+		case COMPANY_GET_APPLICANTS_REQ:
+			return { ...state, loading: true}
+		case COMPANY_GET_APPLICANTS_SUCCESS: 
+			return { loading: false, applicants: action.payload.applications }
+		case COMPANY_GET_APPLICANTS_FAIL: 
+			return { ...state, loading: false, error: action.payload }
+		case COMPANY_GET_APPLICANTS_RESET:
+			return { ...initialCompanyApplicantsState };
+		default: return state
+	}
+}

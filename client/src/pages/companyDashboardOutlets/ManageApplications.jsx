@@ -1,18 +1,29 @@
-import { assetsImages } from '../../assets/images-data'
-import { manageApplications } from '../../assets/mock-data'
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+import { assetsImages } from '../../assets/images-data.js'
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+
 import { Link } from "react-router-dom"
+
+import { useDispatch, useSelector } from "react-redux";
+import { companyApplicantsAction } from "../../redux/actions/CompanyActions.js"
 
 
 const ManageApplications = () => {
  
-	const [applicants, setApplicants] = useState([]);
+	const dispatch = useDispatch();
+	const companyApplicantsReducer = useSelector((state) => state.companyApplicantsReducer);
+	const { loading: applicantsLoading, error: applicantsError, applicants = [] } = companyApplicantsReducer;
+
+	const { companyInfo } = useSelector((state) => state.companyLoginReducer);
 
 
 	useEffect(() => {
-		setApplicants(manageApplications);
-	}, [])
+		if (companyInfo) {
+			dispatch({ type: "COMPANY_GET_APPLICANTS_RESET" });
+			dispatch(companyApplicantsAction());
+		}
+	}, [dispatch, companyInfo]);
 
 
 	return (
@@ -29,20 +40,25 @@ const ManageApplications = () => {
 							<th className='py-2 px-2 text-left w-[100px] max-sm:w-[60px]'>Action</th>
 						</tr>
 					</thead>
+
+					{applicants && !applicantsLoading && (
 					<tbody>
 						{applicants.map((applicant, i) => (
 							<tr key={i} className='text-gray-700 border-b'>
 								<td className='py-2 px-2 text-left max-sm:hidden'>{i + 1}</td>
 								<td className='py-2 px-2 flex items-center'>
-									<img src={applicant.imgSrc} alt="User avatar" className='w-10 h-10 rounded-full mr-3 max-md:w-7 max-md:h-7 max-md:mr-2' />
-									<span>{applicant.name}</span>
+									<img alt="User avatar" className='w-10 h-10 rounded-full mr-3 max-md:w-7 max-md:h-7 max-md:mr-2' 
+									src={applicant.userId.image ? `${BASE_URL}${applicant.userId.image}` : assetsImages.upload_area} />
+									<span>{applicant.userId.name}</span>
 								</td>
 								<td className='py-2 px-2 max-lg:hidden'>
-									<Link to={`/job/${applicant._id}`} className='text-blue-900 hover:text-blue-500 transition duration-300 ease-in-out'>{applicant.jobTitle}</Link>
-								</td>
-								<td className='py-2 px-2 max-xl:hidden'>{applicant.location}</td>
+									<Link to={`/job/${applicant.jobId._id}`} className='text-blue-900 hover:text-blue-500 transition duration-300 ease-in-out' >
+										{applicant.jobId.title}
+									</Link>
+									</td>
+								<td className='py-2 px-2 max-xl:hidden'>{applicant.jobId.location}</td>
 								<td className='py-2 px-2 '>
-									<a href="" target='_blank' className='bg-blue-50 text-blue-500 px-2 py-1 rounded inline-flex gap-2 items-center'>
+									<a href={`${BASE_URL}${applicant.userId.resume}`} download target='_blank' className='bg-blue-50 text-blue-500 px-2 py-1 rounded inline-flex gap-2 items-center'>
 										Resume <img src={assetsImages.resume_download_icon} alt="Resume" />
 									</a>
 								</td>
@@ -65,7 +81,14 @@ const ManageApplications = () => {
 							</tr>
 						))}
 					</tbody>
+					)}
+
 				</table>
+
+			{applicantsError &&
+				<p className=" w-full max-w-4xl text-sm md:text-base mt-6">{applicantsError}</p>
+			}
+
 		</div>
 
 	)

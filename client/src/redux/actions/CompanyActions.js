@@ -248,3 +248,32 @@ export const companyJobVisibilityAction = (id) => async (dispatch, getState) => 
 		});
 	}
 }
+
+
+export const companyApplicantsAction = () => async (dispatch, getState) => {
+	try {
+		dispatch({ 
+			type: COMPANY_GET_APPLICANTS_REQ 
+		});
+
+		const companyInfo = getState().companyLoginReducer.companyInfo;
+    if (!companyInfo || !companyInfo.token) {
+      throw new Error("Company not authenticated");
+    }
+
+		const config = {
+      headers: { Authorization: `Bearer ${companyInfo.token}` }
+    };
+    const { data } = await axios.get(`${BASE_URL}/api/company/applicants`, config);
+		
+		dispatch({ 
+			type: COMPANY_GET_APPLICANTS_SUCCESS,
+			payload: data
+		});
+	} catch (error) { 
+		dispatch({ 
+			type: COMPANY_GET_APPLICANTS_FAIL,
+			payload: error.response && error.response.data.message ? error.response.data.message : error.message
+		});
+	}
+};

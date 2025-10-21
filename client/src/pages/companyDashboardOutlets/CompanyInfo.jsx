@@ -9,26 +9,30 @@ import { companyUpdateAction, companyRemoveAction, companyLogoutAction } from ".
 
 const CompanyInfo = () => {
 
+	// redux
 	const dispatch = useDispatch();
 	const { companyInfo } = useSelector((state) => state.companyLoginReducer);
 	const { loading: updateLoading, error: updateError, success: updateSuccess } = useSelector((state) => state.companyUpdateReducer);
 	const { error: removeError, success: removeSuccess } = useSelector((state) => state.companyRemoveReducer);
 
-
+	// data
 	const [name, setName] = useState(companyInfo.name);
 	const [email, setEmail] = useState(companyInfo.email);
-		const [oldPassword, setOldPassword] = useState("");
+	const [oldPassword, setOldPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
 	const [image, setImage] = useState(companyInfo.image);
 	const [previewImage, setPreviewImage] = useState(null);
 
+	// messages
 	const [errorMessage, setErrorMessage] = useState("");
 	const [successMessage, setSuccessMessage] = useState("");
 
+	// pop-up
 	const [modalVisible, setModalVisible] = useState(false);
 	const [modalMessage, setModalMessage] = useState("");
 
 
+	// after update or delete
 	useEffect(() => {
 		if (updateSuccess) {
 			setSuccessMessage("Company profile updated.");
@@ -55,6 +59,7 @@ const CompanyInfo = () => {
 	}, [dispatch, updateError, updateSuccess, removeError, removeSuccess, companyInfo]);
 
 
+	// update company
 	const updateHandler = (e) => {
 		e.preventDefault();
 		
@@ -70,6 +75,7 @@ const CompanyInfo = () => {
 	};
 
 
+	// remove company
 	const removeHandler = () => {
 		setModalMessage("Are you sure you want to delete your profile?");
 		setModalVisible(true);
@@ -86,6 +92,7 @@ const CompanyInfo = () => {
 	};
 
 
+	// image preview
 	const imageChange = (e) => {
 		const file = e.target.files[0];
 		setImage(file);

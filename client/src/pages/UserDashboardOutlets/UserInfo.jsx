@@ -9,12 +9,13 @@ import { userUpdateAction, userRemoveAction, userLogoutAction } from "../../redu
 
 const UserInfo = () => {
 
+	// redux
 	const dispatch = useDispatch();
 	const { userInfo } = useSelector((state) => state.userLoginReducer);
 	const { loading: updateLoading, error: updateError, success: updateSuccess } = useSelector((state) => state.userUpdateReducer);
 	const { error: removeError, success: removeSuccess } = useSelector((state) => state.userRemoveReducer);
 
-
+	// data
 	const [name, setName] = useState(userInfo.name);
 	const [email, setEmail] = useState(userInfo.email);
 	const [oldPassword, setOldPassword] = useState("");
@@ -23,13 +24,16 @@ const UserInfo = () => {
 	const [previewImage, setPreviewImage] = useState(null);
 	const [resume, setResume] = useState(userInfo.resume);
 
+	// messages
 	const [errorMessage, setErrorMessage] = useState("");
 	const [successMessage, setSuccessMessage] = useState("");
 
+	// pop-up
 	const [modalVisible, setModalVisible] = useState(false);
 	const [modalMessage, setModalMessage] = useState("");
 
 
+	// after update or delete
 	useEffect(() => {
 		if (updateSuccess) {
 			setSuccessMessage("User profile updated.");
@@ -57,6 +61,7 @@ const UserInfo = () => {
 	}, [dispatch, updateError, updateSuccess, removeError, removeSuccess, userInfo]);
 
 
+	// update user
 	const updateHandler = (e) => {
 		e.preventDefault();
 
@@ -73,6 +78,7 @@ const UserInfo = () => {
 	};
 
 
+	// delete user
 	const removeHandler = () => {
 		setModalMessage("Are you sure you want to delete your profile?");
 		setModalVisible(true);
@@ -89,6 +95,7 @@ const UserInfo = () => {
 	};
 
 
+	// image preview
 	const imageChange = (e) => {
 		const file = e.target.files[0];
 		setImage(file);

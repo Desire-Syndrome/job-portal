@@ -11,16 +11,18 @@ import { companyApplicantsAction, companyApplicationStatusAction } from "../../r
 
 const ManageApplications = () => {
 
+	// redux
 	const dispatch = useDispatch();
 	const companyApplicantsReducer = useSelector((state) => state.companyApplicantsReducer);
 	const { loading: applicantsLoading, error: applicantsError, applicants = [] } = companyApplicantsReducer;
 
 	const { companyInfo } = useSelector((state) => state.companyLoginReducer);
 
-
+	// data
 	const [localApplicants, setLocalApplicants] = useState([]);
 
 
+	// get applicants
 	useEffect(() => {
 		if (companyInfo) {
 			dispatch({ type: "COMPANY_GET_APPLICANTS_RESET" });
@@ -29,18 +31,19 @@ const ManageApplications = () => {
 	}, [dispatch, companyInfo]);
 
 
-	useEffect(() => {
-		if (applicants.length > 0) {
-			setLocalApplicants(applicants);
-		}
-	}, [applicants]);
-
+	// update applicants
 	const handleStatusChange = (id, status) => {
 		setLocalApplicants(prev =>
 			prev.map(a => a._id === id ? { ...a, status } : a)
 		);
 		dispatch(companyApplicationStatusAction(id, status));
 	};
+
+	useEffect(() => {
+		if (applicants.length > 0) {
+			setLocalApplicants(applicants);
+		}
+	}, [applicants]);
 
 
 	return (

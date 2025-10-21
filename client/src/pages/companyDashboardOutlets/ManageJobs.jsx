@@ -11,6 +11,7 @@ const ManageJobs = () => {
 
 	const navigate = useNavigate();
 
+	// redux
 	const dispatch = useDispatch();
 	const companyGetJobsReducer = useSelector((state) => state.companyGetJobsReducer);
 	const { loading: jobsLoading, error: jobsError, jobs = [] } = companyGetJobsReducer;
@@ -18,6 +19,7 @@ const ManageJobs = () => {
 	const { companyInfo } = useSelector((state) => state.companyLoginReducer);
 
 
+	// get company jobs
 	useEffect(() => {
 		if (companyInfo) {
 			dispatch({ type: "COMPANY_GET_JOBS_RESET" });
@@ -25,7 +27,8 @@ const ManageJobs = () => {
 		}
 	}, [dispatch, companyInfo]);
 
- 
+	
+	// update job visibility
   const handleJobVisibility = (jobId) => {
     dispatch(companyJobVisibilityAction(jobId));
 

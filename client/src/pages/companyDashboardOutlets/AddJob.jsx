@@ -11,22 +11,24 @@ import Quill from 'quill';
 
 const AddJob = () => {
 
+	const navigate = useNavigate();
+
+	// redux
 	const dispatch = useDispatch();
 	const { loading: addJobLoading, success: addJobSuccess, error: addJobError, job } = useSelector(state => state.companyAddJobReducer);
 
-	
+	// data
 	const [title, setTitle] = useState("");
 	const [location, setLocation] = useState(jobLocations[0]);
 	const [category, setCategory] = useState(jobCategories[0]);
 	const [level, setLevel] = useState(jobLevels[0]);
 	const [salary, setSalary] = useState(0);
 
+	// messages
 	const [errorMessage, setErrorMessage] = useState("");
 	const [successMessage, setSuccessMessage] = useState("");
 
-	const navigate = useNavigate();
-
-
+	// editor
 	const editorRef = useRef(null);
 	const quillRef = useRef(null);
 
@@ -39,6 +41,7 @@ const AddJob = () => {
 	}, [])
 
 
+	// add job
 	useEffect(() => {
 		if (addJobSuccess) {
 			setTitle("");
@@ -62,7 +65,6 @@ const AddJob = () => {
 			}, 3000);
 		}
 	}, [dispatch, addJobSuccess, addJobError, navigate, job]);
-
 
 	const addJobHandler = (e) => {
 		e.preventDefault();

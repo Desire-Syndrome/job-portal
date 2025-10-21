@@ -7,11 +7,13 @@ const Job = require("../models/Job.js");
 const getJobs = AsyncHandler(async (req, res) => {
 	const jobs = await Job.find({ visible: true }).populate({ path: 'companyId', select: "-password" });
 	
+	 const validJobs = jobs.filter(job => job.companyId !== null);
+
 	if (jobs.length === 0) {
     return res.status(404).json({ message: "Jobs not found." });
   }
 
-	return res.status(200).json({ jobs });
+	return res.status(200).json({ jobs: validJobs });
 });
 
 

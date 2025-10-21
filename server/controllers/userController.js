@@ -145,6 +145,8 @@ const deleteUser = AsyncHandler(async (req, res) => {
       await deleteUploadedFile(user.image);
     }
 
+    await JobApplication.deleteMany({ userId: user._id });
+
     await user.deleteOne();
     return res.status(200).json({ message: "User profile deleted successfully." });
   } else {
@@ -189,7 +191,11 @@ const getUserApplications = AsyncHandler(async (req, res) => {
     return res.status(404).json({ success: false, message: 'No applications found...' });
   }
 
-  res.json({ success: true, applications });
+  const validApplications = applications.filter(
+    (app) => app.companyId !== null && app.jobId !== null
+  );
+
+  return res.status(200).json({ applications: validApplications });
 });
 
 

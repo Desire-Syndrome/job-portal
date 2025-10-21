@@ -75,9 +75,13 @@ const ManageApplications = () => {
 								</td>
 								<td className='py-2 px-2 max-xl:hidden'>{applicant.jobId.location}</td>
 								<td className='py-2 px-2 '>
-									<a href={`${BASE_URL}${applicant.userId.resume}`} download target='_blank' className='bg-blue-50 text-blue-500 px-2 py-1 rounded inline-flex gap-2 items-center'>
+									{applicant.userId.resume ? (
+									<a href={`${BASE_URL}${applicant.userId.resume}`} download target='_blank' className='bg-blue-100 text-blue-500 px-2 py-1 rounded inline-flex gap-2 items-center'>
 										Resume <img src={assetsImages.resume_download_icon} alt="Resume" />
 									</a>
+									):(
+										<p className='bg-gray-200 px-2 py-1 rounded inline-flex gap-2 items-center'> No Resume</p>
+									)}
 								</td>
 								<td className='py-2 px-2 relative w-[100px] max-sm:w-[60px]'>
 									{applicant.status === "Pending" ? (

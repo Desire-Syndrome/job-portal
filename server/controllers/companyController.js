@@ -132,6 +132,11 @@ const deleteCompany = AsyncHandler(async (req, res) => {
       await deleteUploadedFile(company.image);
     }
 
+    const jobs = await Job.find({ companyId: company._id });
+    const jobIds = jobs.map(job => job._id);
+    await JobApplication.deleteMany({ jobId: { $in: jobIds } });
+    await Job.deleteMany({ companyId: company._id });
+
     await company.deleteOne();
     return res.status(200).json({ message: "Company profile deleted successfully." });
   } else {
@@ -169,11 +174,20 @@ const getPostedJobs = AsyncHandler(async (req, res) => {
   if (jobs && jobs.length !== 0) {
     const jobsWithApplicants = await Promise.all(
       jobs.map(async (job) => {
-        const applicants = await JobApplication.find({ jobId: job._id });
-        return { ...job.toObject(), applicants: applicants.length };
+
+        const validApplications = await JobApplication.find({ jobId: job._id })
+          .populate('userId', '_id')
+          .lean();
+
+        const activeApplicants = validApplications.filter(app => app.userId !== null);
+        return {
+          ...job.toObject(),
+          applicants: activeApplicants.length,
+        };
       })
     );
-    res.status(200).json({ jobs: jobsWithApplicants })
+
+    return res.status(200).json({ jobs: jobsWithApplicants });
   } else {
     return res.status(404).json({ message: "No jobs found..." });
   }
@@ -187,7 +201,16 @@ const getApplicants = AsyncHandler(async (req, res) => {
   const applications = await JobApplication.find({ companyId })
     .populate('userId', 'name resume image')
     .populate('jobId', 'title description location category level salary');
-  return res.status(200).json({ applications });
+
+  if (applications.length === 0) {
+    return res.status(404).json({ success: false, message: 'No applications found...' });
+  }
+
+  const validApplications = applications.filter(
+    (app) => app.userId !== null && app.jobId !== null
+  );
+
+  return res.status(200).json({ applications: validApplications });
 });
 
 

@@ -8,11 +8,11 @@ const fs = require("fs");
 const settings = {
   avatar: {
     folder: "avatars",
-    mimeTypes: ["image/jpeg", "image/png", "image/gif"],
+    mimeTypes: ["image/jpeg", "image/png", "image/gif", "image/svg+xml"]
   },
   logo: {
     folder: "logos",
-    mimeTypes: ["image/jpeg", "image/png", "image/gif"],
+    mimeTypes: ["image/jpeg", "image/png", "image/gif", "image/svg+xml"]
   },
   resume: {
     folder: "resume",

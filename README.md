@@ -2,6 +2,9 @@ This project is a full-stack web application designed to manage job postings and
 Built with a modern tech stack, it allows companies to post jobs, manage applicants, and update job visibility and application statuses seamlessly. 
 It focuses on performance, responsive design, and user-friendly interfaces.
 
+<img width="1680" height="1224" alt="screencapture-localhost-5173-2025-10-21-17_56_45" src="https://github.com/user-attachments/assets/872093bb-f22a-46ae-b899-f7fc03ad3ede" />
+<img width="1680" height="889" alt="screencapture-localhost-5173-dashboard-manage-applications-2025-10-21-17_57_15" src="https://github.com/user-attachments/assets/fe1d6b91-4c94-4ec6-bec7-86ae804661a6" />
+
 Key Features:
 - User authentication for companies and applicants
 - Full CRUD functionality for job postings

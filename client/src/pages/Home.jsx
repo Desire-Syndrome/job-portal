@@ -14,6 +14,9 @@ import JobCard from '../components/JobCard.jsx'
 
 const Home = () => {
 
+	// url params
+	const [searchParams, setSearchParams] = useSearchParams();
+
 	// filters
 	const [showFilters, setShowFilters] = useState(false);
 	const [selectedCategories, setSelectedCategories] = useState([]);
@@ -24,8 +27,7 @@ const Home = () => {
 	const [searchByTitle, setSearchByTitle] = useState("");
 	const titleRef = useRef(null);
 
-	// url params
-	const [searchParams, setSearchParams] = useSearchParams();
+	// page pagination
 	const initialPage = Number(searchParams.get("page")) || 1;
 	const [currentPage, setCurrentPage] = useState(initialPage);
 	const articlesPerPage = 3;

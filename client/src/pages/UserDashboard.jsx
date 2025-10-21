@@ -12,6 +12,7 @@ const UserDashboard = () => {
 
 	const dispatch = useDispatch();
 
+	
 	const logoutHandler = () => {
 		dispatch(userLogoutAction());
 	}

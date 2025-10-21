@@ -17,8 +17,10 @@ import Layouts from '../layouts/Layouts'
 
 const Job = () => {
 
+	// url params
 	const { id } = useParams();
 
+	// redux
 	const dispatch = useDispatch();
 	const jobReducer = useSelector((state) => state.jobReducer);
 	const { loading: jobLoading, error: jobError, job } = jobReducer;
@@ -30,23 +32,14 @@ const Job = () => {
 	const { companyInfo } = useSelector((state) => state.companyLoginReducer);
 
 
+	// get current job 
 	useEffect(() => {
 		dispatch({ type: "USER_APPLY_RESET" });
 		dispatch(getJobAction(id))
-		dispatch(getJobsListAction());
 	}, [dispatch, id]);
 
-	const relatedJobs = useMemo(() => {
-		if (!jobsLoading && jobs.length > 0 && job) {
-			return jobs
-				.filter(j => j._id !== job._id && j.companyId._id === job.companyId._id)
-				.sort(() => Math.random() - 0.5)
-				.slice(0, 3);
-		}
-		return [];
-	}, [jobsLoading, jobs, job]);
 
-
+	// apply for a job
 	const applyHandler = () => {
 		dispatch(applyForJobAction(job._id));
 	};
@@ -59,6 +52,23 @@ const Job = () => {
 			return () => clearTimeout(timer);
 		}
 	}, [dispatch, applyError, applySuccess]);
+
+
+	// get related jobs
+	useEffect(() => {
+		if (job && job.category) {
+			dispatch(getJobsListAction(1, 30, [job.category]));
+		}
+	}, [dispatch, job]);
+
+	// filter related jobs
+	const relatedJobs = useMemo(() => {
+		if (!jobsLoading && jobs.length > 0 && job) {
+			return jobs.filter(j => j._id !== job._id).sort(() => Math.random() - 0.5).slice(0, 3);
+		} else {
+			return [];
+		}
+	}, [jobsLoading, jobs, job]);
 
 
 	return (<Layouts>
@@ -119,7 +129,7 @@ const Job = () => {
 						</div>
 
 						<div className='w-full lg:w-1/3 mt-10 lg:mt-6 lg:ml-8 space-y-5'>
-							<h3 className='font-bold mb-4 text-zinc-800'>More jobs from {job.companyId.name}</h3>
+							<h3 className='font-bold mb-4 text-zinc-800'>Related jobs</h3>
 							{!jobsLoading ? (
 								relatedJobs.map((j, i) => <JobCard key={i} job={j} />)
 							) : (

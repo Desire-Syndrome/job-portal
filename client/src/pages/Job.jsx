@@ -130,10 +130,12 @@ const Job = () => {
 
 						<div className='w-full lg:w-1/3 mt-10 lg:mt-6 lg:ml-8 space-y-5'>
 							<h3 className='font-bold mb-4 text-zinc-800'>Related jobs</h3>
-							{!jobsLoading ? (
+							{jobsLoading ? (
+								<p>Loading...</p>
+							) : relatedJobs.length > 0 ? (
 								relatedJobs.map((j, i) => <JobCard key={i} job={j} />)
 							) : (
-								<p>Loading...</p>
+								<p>No related jobs found...</p>
 							)}
 						</div>
 					</div>

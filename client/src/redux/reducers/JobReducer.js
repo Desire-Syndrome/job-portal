@@ -11,7 +11,10 @@ export const jobsListReducer = (state = initialJobsListState, action) => {
 		case GET_ALL_JOBS_REQ:
 			return { ...state, loading: true}
 		case GET_ALL_JOBS_SUCCESS: 
-			return { loading: false, jobs: action.payload.jobs }
+			return { 
+				loading: false, jobs: action.payload.jobs,
+				page: action.payload.page, totalPages: action.payload.totalPages, totalJobs: action.payload.totalJobs
+			 }
 		case GET_ALL_JOBS_FAIL: 
 			return { ...state, loading: false, error: action.payload }
 		case GET_ALL_JOBS_RESET:

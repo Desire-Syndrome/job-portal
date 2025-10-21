@@ -8,13 +8,21 @@ GET_JOB_REQ, GET_JOB_SUCCESS, GET_JOB_FAIL, GET_JOB_RESET
 } from "../constants/JobConstants";
 
 
-export const getJobsListAction = () => async (dispatch) => {
+export const getJobsListAction = (page = 1, limit = 12, categories = [], locations = [], title = "") => async (dispatch) => {
 	try {
 		dispatch({ 
 			type: GET_ALL_JOBS_REQ 
 		});
 
-		const { data } = await axios.get(`${BASE_URL}/api/jobs`);
+		const params = new URLSearchParams();
+    params.append("page", page);
+    params.append("limit", limit);
+		if (title) { params.append("title", title) };
+    if (categories.length > 0) { params.append("categories", categories.join(",")) };
+    if (locations.length > 0) { params.append("locations", locations.join(",")) };
+    
+
+    const { data } = await axios.get(`${BASE_URL}/api/jobs?${params.toString()}`);
 		dispatch({ 
 			type: GET_ALL_JOBS_SUCCESS,
 			payload: data
